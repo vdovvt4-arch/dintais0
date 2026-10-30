@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="robots" content="noindex, nofollow">
+<title>اختبار طب الأسنان | الأسهل بطب الأسنان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0f172a;
+    --bg-deep:#020617;
+    --cyan:#06b6d4;
+    --cyan-soft:#67e8f9;
+    --blue:#3b82f6;
+    --ok:#10b981;
+    --bad:#ef4444;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --glass:rgba(15,23,42,.62);
+    --border:rgba(103,232,249,.16);
+    --ease-slow:cubic-bezier(.16,1,.3,1);
+    --ease-out:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text)}
+  body{
+    font-family:'Cairo',system-ui,sans-serif;
+    overflow:hidden;
+    -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+    -webkit-touch-callout:none;
+    -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1200px 600px at 85% -10%,rgba(6,182,212,.16),transparent 60%),
+      radial-gradient(900px 500px at -10% 110%,rgba(59,130,246,.16),transparent 60%),
+      var(--bg);
+  }
+  input{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+  img,svg{-webkit-user-drag:none;user-drag:none}
+  .font-en{font-family:'Inter',system-ui,sans-serif}
+  .font-ar{font-family:'Cairo',system-ui,sans-serif}
+
+  /* ---------- App shell & screens ---------- */
+  #app{position:fixed;inset:0;transition:filter .25s ease}
+  .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.35;
+    background-image:linear-gradient(rgba(148,163,184,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.06) 1px,transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+  .screen{position:fixed;inset:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;opacity:0;visibility:hidden;transform:scale(1.025);
+    transition:opacity 1s var(--ease-out),transform 1.1s var(--ease-out),visibility 0s linear 1.1s;
+    padding:max(16px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+  .screen.active{opacity:1;visibility:visible;transform:none;transition:opacity 1s var(--ease-out),transform 1.1s var(--ease-out),visibility 0s}
+  .screen > .wrap{margin:auto;width:100%}
+
+  .glass{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid var(--border);border-radius:24px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.02) inset,0 20px 60px -20px rgba(2,6,23,.8),0 0 40px -12px rgba(6,182,212,.25)}
+  .glow-border{position:relative}
+  .glow-border::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:linear-gradient(135deg,rgba(103,232,249,.55),rgba(59,130,246,.05) 40%,rgba(59,130,246,.05) 60%,rgba(6,182,212,.45));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+
+  /* ---------- Splash (cinematic slow motion) ---------- */
+  #splash{background:radial-gradient(ellipse at center,#0b1a33 0%,var(--bg-deep) 70%);align-items:center;justify-content:center;text-align:center;z-index:50}
+  #splash.active{transform:none}
+  #splash:not(.active){transform:scale(1.08);filter:blur(10px);transition:opacity 1.1s var(--ease-out),transform 1.3s var(--ease-out),filter 1.1s var(--ease-out),visibility 0s linear 1.3s}
+  .splash-orb{position:absolute;width:520px;height:520px;max-width:120vw;max-height:120vw;border-radius:50%;
+    background:radial-gradient(circle,rgba(6,182,212,.28),rgba(59,130,246,.12) 45%,transparent 70%);
+    filter:blur(30px);animation:orb 3.6s var(--ease-slow) forwards;opacity:0}
+  @keyframes orb{0%{opacity:0;transform:scale(.4)}100%{opacity:1;transform:scale(1.1)}}
+  .splash-tooth{width:74px;height:74px;margin:0 auto 26px;opacity:0;filter:blur(12px) drop-shadow(0 0 18px rgba(6,182,212,.7));
+    animation:toothIn 2s var(--ease-slow) .1s forwards}
+  @keyframes toothIn{to{opacity:1;filter:blur(0) drop-shadow(0 0 18px rgba(6,182,212,.7));transform:translateY(0)}}
+  .splash-title{position:relative;font-weight:900;line-height:1.5;font-size:clamp(28px,6.4vw,64px);margin:0;padding:0 8px;
+    filter:drop-shadow(0 0 22px rgba(6,182,212,.45));word-spacing:.9em;animation:spread 3.3s var(--ease-slow) forwards}
+  @keyframes spread{to{word-spacing:.18em}}
+  .s-word{display:inline-block;opacity:0;filter:blur(20px);transform:translateY(34px) scale(1.25);
+    background:linear-gradient(100deg,#a5f3fc 0%,#22d3ee 30%,#3b82f6 55%,#67e8f9 80%,#e0f2fe 100%);background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    animation:slowmo 2.4s var(--ease-slow) forwards,shimmer 4s linear infinite;animation-delay:calc(var(--i) * .26s + .25s),0s}
+  @keyframes slowmo{0%{opacity:0;filter:blur(20px);transform:translateY(34px) scale(1.25)}55%{opacity:1}100%{opacity:1;filter:blur(0);transform:none}}
+  @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:250% 50%}}
+  .splash-sub{font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(10px,2.4vw,13px);color:var(--cyan-soft);
+    margin-top:22px;opacity:0;letter-spacing:.05em;text-transform:uppercase;animation:subIn 2.6s var(--ease-slow) 1.2s forwards}
+  @keyframes subIn{to{opacity:.75;letter-spacing:.55em}}
+  .splash-line{width:min(280px,60vw);height:2px;margin:26px auto 0;border-radius:2px;overflow:hidden;background:rgba(148,163,184,.12)}
+  .splash-line span{display:block;height:100%;width:0;background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent);
+    animation:lineGrow 3.3s cubic-bezier(.65,0,.35,1) .1s forwards;box-shadow:0 0 12px var(--cyan)}
+  @keyframes lineGrow{to{width:100%}}
+
+  /* ---------- Registration ---------- */
+  .brand-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;
+    color:var(--cyan-soft);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25)}
+  .input-wrap{position:relative}
+  .name-input{width:100%;padding:16px 18px 16px 48px;border-radius:16px;font-family:'Cairo',sans-serif;font-size:17px;font-weight:600;
+    color:var(--text);background:rgba(2,6,23,.55);border:1.5px solid rgba(148,163,184,.18);outline:none;transition:border-color .25s,box-shadow .25s,background .25s}
+  .name-input::placeholder{color:#64748b;font-weight:500}
+  .name-input:focus{border-color:var(--cyan);background:rgba(2,6,23,.75);box-shadow:0 0 0 4px rgba(6,182,212,.15),0 0 24px -6px rgba(6,182,212,.6)}
+  .name-input.invalid{border-color:var(--bad);box-shadow:0 0 0 4px rgba(239,68,68,.15);animation:shake .45s}
+  @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+  .input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#64748b;pointer-events:none}
+
+  .btn-primary{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    padding:15px 22px;border:none;border-radius:16px;cursor:pointer;font-weight:800;font-size:16px;color:#fff;
+    background:linear-gradient(135deg,var(--cyan),var(--blue));box-shadow:0 10px 30px -8px rgba(6,182,212,.6),inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .2s var(--ease-out),box-shadow .25s,filter .2s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px -8px rgba(6,182,212,.75),inset 0 1px 0 rgba(255,255,255,.25)}
+  .btn-primary:active{transform:translateY(0) scale(.98)}
+  .btn-primary::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:sweep 3.2s ease-in-out infinite}
+  @keyframes sweep{0%,60%{left:-60%}100%{left:130%}}
+  .btn-primary:disabled{filter:grayscale(.6) brightness(.7);cursor:not-allowed;transform:none}
+  .btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:14px;cursor:pointer;
+    font-weight:700;font-size:15px;color:#e2e8f0;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.18);transition:all .2s var(--ease-out)}
+  .btn-ghost:hover:not(:disabled){background:rgba(148,163,184,.14);border-color:rgba(103,232,249,.35);color:#fff}
+  .btn-ghost:disabled{opacity:.35;cursor:not-allowed}
+  .btn-submit{background:linear-gradient(135deg,#10b981,#06b6d4)!important;box-shadow:0 10px 30px -8px rgba(16,185,129,.55)!important}
+
+  .feature{display:flex;align-items:center;gap:10px;font-size:13px;color:#cbd5e1}
+  .feature i{width:30px;height:30px;flex:none;border-radius:10px;display:grid;place-items:center;background:rgba(6,182,212,.1);color:var(--cyan-soft);font-style:normal}
+
+  /* ---------- Exam ---------- */
+  .topbar{position:sticky;top:0;z-index:5}
+  .progress-track{height:8px;border-radius:999px;background:rgba(148,163,184,.12);overflow:hidden}
+  .progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue));
+    box-shadow:0 0 14px rgba(6,182,212,.7);transition:width .6s var(--ease-out);position:relative}
+  .progress-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    background-size:200% 100%;animation:shimmer 2s linear infinite}
+  .quiz{direction:ltr;text-align:left;font-family:'Inter',system-ui,sans-serif}
+  .q-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.02em;
+    color:var(--cyan-soft);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.22)}
+  .q-text{font-size:clamp(18px,2.6vw,23px);line-height:1.55;font-weight:700;color:#f8fafc;margin:18px 0 22px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 16px;margin-bottom:12px;border-radius:16px;cursor:pointer;
+    font-family:'Inter',sans-serif;font-size:16px;font-weight:500;line-height:1.45;color:#e2e8f0;background:rgba(2,6,23,.45);
+    border:1.5px solid rgba(148,163,184,.14);transition:transform .18s var(--ease-out),border-color .2s,background .2s,box-shadow .2s}
+  .opt:hover{border-color:rgba(103,232,249,.4);background:rgba(6,182,212,.06);transform:translateX(3px)}
+  .opt:active{transform:scale(.99)}
+  .opt .letter{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:14px;
+    color:#cbd5e1;background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.18);transition:all .2s}
+  .opt.selected{border-color:var(--cyan);background:linear-gradient(135deg,rgba(6,182,212,.16),rgba(59,130,246,.1));color:#fff;
+    box-shadow:0 0 0 3px rgba(6,182,212,.12),0 0 26px -8px rgba(6,182,212,.8)}
+  .opt.selected .letter{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;border-color:transparent;box-shadow:0 0 14px rgba(6,182,212,.6)}
+  .q-anim-next{animation:qNext .42s var(--ease-out)}
+  .q-anim-prev{animation:qPrev .42s var(--ease-out)}
+  @keyframes qNext{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+  @keyframes qPrev{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+  .dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .dot{width:34px;height:34px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+    color:#94a3b8;background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.14);transition:all .2s}
+  .dot:hover{border-color:rgba(103,232,249,.4);color:#fff}
+  .dot.answered{color:#a5f3fc;background:rgba(6,182,212,.14);border-color:rgba(6,182,212,.35)}
+  .dot.current{color:#fff;background:linear-gradient(135deg,var(--cyan),var(--blue));border-color:transparent;box-shadow:0 0 14px rgba(6,182,212,.6);transform:scale(1.08)}
+  .kbd{font-family:'Inter',sans-serif;font-size:11px;padding:2px 6px;border-radius:6px;border:1px solid rgba(148,163,184,.25);color:#94a3b8;background:rgba(148,163,184,.06)}
+
+  /* ---------- Results ---------- */
+  .ring-bg{stroke:rgba(148,163,184,.14)}
+  .ring-fg{stroke-linecap:round;transition:stroke-dashoffset 1.8s var(--ease-slow);filter:drop-shadow(0 0 8px rgba(6,182,212,.7))}
+  .stat{border-radius:16px;padding:12px;text-align:center;background:rgba(2,6,23,.45);border:1px solid rgba(148,163,184,.14)}
+  .stat b{display:block;font-family:'Inter',sans-serif;font-size:22px;font-weight:800}
+  .stat span{font-size:12px;color:var(--muted);font-weight:600}
+  .rev{border-radius:18px;padding:18px;margin-bottom:14px;background:rgba(2,6,23,.4);border:1px solid rgba(148,163,184,.14);border-left-width:4px}
+  .rev.ok{border-left-color:var(--ok)}
+  .rev.bad{border-left-color:var(--bad)}
+  .rev.skip{border-left-color:#f59e0b}
+  .rev-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;margin-top:8px;font-size:15px;color:#cbd5e1;
+    background:rgba(148,163,184,.05);border:1px solid rgba(148,163,184,.1)}
+  .rev-opt.correct{color:#d1fae5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.5)}
+  .rev-opt.wrong{color:#fee2e2;background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.5)}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.03em;text-transform:uppercase}
+  .tag.ok{color:#6ee7b7;background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.35)}
+  .tag.bad{color:#fca5a5;background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.35)}
+  .tag.skip{color:#fcd34d;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.35)}
+  .fade-up{opacity:0;transform:translateY(16px);animation:fadeUp .7s var(--ease-out) forwards}
+  @keyframes fadeUp{to{opacity:1;transform:none}}
+
+  /* ---------- Security layers ---------- */
+  #watermark{position:fixed;inset:-50%;z-index:9990;pointer-events:none;opacity:.06;display:none;background-repeat:repeat;transform:rotate(-24deg)}
+  #watermark.on{display:block}
+  #shield{position:fixed;inset:0;z-index:9995;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;
+    background:rgba(2,6,23,.82);-webkit-backdrop-filter:blur(25px);backdrop-filter:blur(25px)}
+  body.shielded #shield{display:flex}
+  body.shielded #app{filter:blur(25px)}
+  body.shielded .quiz,body.shielded #reviewList,body.shielded #resultCard,body.shielded #coachCard{visibility:hidden!important}
+  .shield-icon{width:76px;height:76px;margin:0 auto 18px;border-radius:24px;display:grid;place-items:center;
+    background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:#fca5a5;box-shadow:0 0 40px -6px rgba(239,68,68,.55);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 60px -2px rgba(239,68,68,.75);transform:scale(1.04)}}
+
+  #toast{position:fixed;top:max(18px,env(safe-area-inset-top));left:50%;z-index:10000;transform:translate(-50%,-140%);opacity:0;
+    display:flex;align-items:center;gap:10px;max-width:92vw;padding:13px 20px;border-radius:16px;font-weight:800;font-size:15px;direction:rtl;
+    color:#fff;background:linear-gradient(135deg,rgba(220,38,38,.95),rgba(190,18,60,.95));border:1px solid rgba(254,202,202,.35);
+    box-shadow:0 16px 40px -10px rgba(239,68,68,.7);transition:transform .45s var(--ease-out),opacity .35s}
+  #toast.show{transform:translate(-50%,0);opacity:1}
+  #toast.info{background:linear-gradient(135deg,rgba(8,145,178,.96),rgba(37,99,235,.96));border-color:rgba(165,243,252,.35);box-shadow:0 16px 40px -10px rgba(6,182,212,.7)}
+
+  #modal{position:fixed;inset:0;z-index:9980;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,6,23,.7);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  #modal.open{display:flex}
+  #modal .glass{animation:pop .35s var(--ease-out)}
+  @keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- Assistant ---------- */
+  #register,#exam,#results{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .assistant{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));z-index:9985;
+    display:flex;flex-direction:column;align-items:flex-start;gap:10px;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(24px);
+    transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),visibility 0s linear .5s;font-family:'Cairo',sans-serif}
+  .assistant.on{opacity:1;visibility:visible;transform:none;transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),visibility 0s}
+  .as-dock{display:flex;align-items:center;gap:8px;pointer-events:auto}
+  .as-avatar{position:relative;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);box-shadow:0 10px 26px -6px rgba(6,182,212,.65),0 0 0 3px rgba(6,182,212,.14);transition:transform .2s var(--ease-out)}
+  .as-avatar:hover{transform:scale(1.06)}
+  .as-mood{position:absolute;top:-4px;right:-4px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;
+    background:#0f172a;border:2px solid #06b6d4}
+  .as-badge{position:absolute;bottom:-3px;left:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;font-size:10px;font-weight:900;
+    display:none;place-items:center;background:#10b981;color:#022c22;border:2px solid #0f172a}
+  .as-badge.on{display:grid;animation:pop .25s var(--ease-out)}
+  .as-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;
+    color:#e2e8f0;background:rgba(15,23,42,.88);border:1px solid rgba(103,232,249,.28);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    box-shadow:0 10px 25px -8px rgba(2,6,23,.8);transition:all .2s}
+  .as-pill:hover{border-color:#06b6d4;color:#fff}
+  .as-panel{width:min(350px,calc(100vw - 28px));border-radius:22px 22px 22px 8px;direction:rtl;text-align:right;
+    background:rgba(15,23,42,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(103,232,249,.28);
+    box-shadow:0 22px 55px -14px rgba(2,6,23,.92),0 0 32px -10px rgba(6,182,212,.45);
+    opacity:0;visibility:hidden;transform:translateY(14px) scale(.94);transform-origin:bottom left;
+    transition:opacity .26s var(--ease-out),transform .3s var(--ease-out),visibility 0s linear .3s;overflow:hidden}
+  .as-panel.open{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .26s var(--ease-out),transform .3s var(--ease-out),visibility 0s}
+  .as-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;background:rgba(2,6,23,.55);border-bottom:1px solid rgba(148,163,184,.12)}
+  .as-name{font-size:12.5px;font-weight:900;color:#67e8f9;display:flex;align-items:center;gap:6px}
+  .as-name::before{content:"";width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981}
+  .as-hbtns{display:flex;align-items:center;gap:4px}
+  .as-ibtn{background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.16);color:#cbd5e1;cursor:pointer;font-size:12px;font-weight:800;
+    border-radius:8px;padding:3px 8px;font-family:'Cairo',sans-serif;transition:all .18s}
+  .as-ibtn:hover{background:rgba(6,182,212,.18);color:#fff;border-color:rgba(103,232,249,.4)}
+  .as-ibtn.muted{color:#fca5a5;border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.12)}
+  .as-body{padding:12px 14px}
+  .as-section-lbl{font-size:10.5px;font-weight:800;color:#94a3b8;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+  .as-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+  .as-chip{padding:6px 6px;border-radius:10px;font-family:'Cairo',sans-serif;font-size:11.5px;font-weight:800;cursor:pointer;text-align:center;
+    color:#cbd5e1;background:rgba(2,6,23,.55);border:1px solid rgba(148,163,184,.15);transition:all .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .as-chip:hover{border-color:rgba(103,232,249,.4);color:#fff}
+  .as-chip.active{color:#fff;background:linear-gradient(135deg,rgba(6,182,212,.28),rgba(59,130,246,.22));border-color:#06b6d4;box-shadow:0 0 14px -4px rgba(6,182,212,.6)}
+  .as-msg{padding:10px 12px;border-radius:14px;background:rgba(2,6,23,.5);border:1px solid rgba(103,232,249,.16);font-size:13.5px;line-height:1.8;color:#f1f5f9;font-weight:600;min-height:46px}
+  .as-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .as-actions:empty{display:none}
+  .as-btn{padding:6px 11px;border-radius:999px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:800;cursor:pointer;
+    color:#a5f3fc;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);transition:all .18s}
+  .as-btn:hover{background:rgba(6,182,212,.26);color:#fff}
+  .as-tools{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(148,163,184,.12)}
+  .as-tool{padding:7px 9px;border-radius:10px;font-family:'Cairo',sans-serif;font-size:11.5px;font-weight:800;cursor:pointer;text-align:center;
+    color:#e2e8f0;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.16);transition:all .18s}
+  .as-tool:hover:not(:disabled){background:rgba(6,182,212,.16);border-color:rgba(103,232,249,.4);color:#fff}
+  .as-tool:disabled{opacity:.38;cursor:not-allowed}
+  .opt.eliminated{opacity:.32;pointer-events:none;text-decoration:line-through;filter:grayscale(1)}
+  .opt.locked{opacity:.52;cursor:not-allowed}
+  .opt.locked:hover{transform:none;border-color:rgba(239,68,68,.35);background:rgba(2,6,23,.45)}
+  .opt.deny-shake{animation:shake .4s}
+  .changes-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-family:'Cairo',sans-serif;font-size:11.5px;font-weight:800;
+    color:#a5f3fc;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);transition:all .25s}
+  .changes-badge.warn{color:#fde68a;background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.4)}
+  .changes-badge.zero{color:#fca5a5;background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.4)}
+  .gender-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;
+    transition:all .22s;margin-bottom:6px;user-select:none}
+  .gender-pill.male{color:#a5f3fc;background:rgba(6,182,212,.13);border:1px solid rgba(6,182,212,.35)}
+  .gender-pill.female{color:#fbcfe8;background:rgba(236,72,153,.14);border:1px solid rgba(244,114,182,.4)}
+  .gender-pill.hidden{display:none}
+  .typing{display:inline-flex;gap:4px;padding:6px 0}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#67e8f9;animation:typing 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+  @keyframes typing{0%,80%,100%{opacity:.25;transform:none}40%{opacity:1;transform:translateY(-4px)}}
+
+  /* ---------- Persona & Order picker on registration ---------- */
+  .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .mode-card{padding:10px 8px;border-radius:14px;cursor:pointer;text-align:center;background:rgba(2,6,23,.5);border:1.5px solid rgba(148,163,184,.16);transition:all .2s}
+  .mode-card:hover{border-color:rgba(103,232,249,.4)}
+  .mode-card.active{border-color:var(--cyan);background:linear-gradient(135deg,rgba(6,182,212,.18),rgba(59,130,246,.12));box-shadow:0 0 20px -6px rgba(6,182,212,.6)}
+  .mode-card b{display:block;font-size:13px;font-weight:800;color:#f8fafc;margin-top:3px}
+  .mode-card small{display:block;font-size:10.5px;color:#94a3b8;line-height:1.35;margin-top:2px}
+
+  /* ---------- Solution comments & coach ---------- */
+  .comment{display:flex;gap:10px;margin-top:14px;padding:12px 14px;border-radius:14px;font-family:'Cairo',sans-serif;text-align:right;
+    background:rgba(6,182,212,.06);border:1px dashed rgba(103,232,249,.28)}
+  .c-ava{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:linear-gradient(135deg,#06b6d4,#3b82f6)}
+  .c-verdict{font-weight:800;font-size:14px;line-height:1.8}
+  .c-exp{font-size:13.5px;line-height:1.9;color:#cbd5e1;margin-top:2px}
+  .comment bdi{font-family:'Inter',sans-serif;font-weight:700}
+  .coach-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .coach-list li{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.85;color:#e2e8f0;
+    background:rgba(2,6,23,.45);border:1px solid rgba(148,163,184,.12)}
+  .coach-list li span:first-child{flex:none;font-size:18px;line-height:1.5}
+  .tbar{margin-bottom:12px}
+  .tbar-head{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;margin-bottom:6px;color:#e2e8f0}
+  .tbar-head b{font-family:'Inter',sans-serif;color:#94a3b8;font-size:12px}
+  .tbar-track{height:8px;border-radius:99px;background:rgba(148,163,184,.12);overflow:hidden}
+  .tbar-fill{height:100%;width:0;border-radius:99px;transition:width 1.3s var(--ease-slow)}
+  .filters{display:flex;gap:6px;flex-wrap:wrap}
+  .flt{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+    color:#94a3b8;background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.15);transition:all .2s}
+  .flt b{margin-left:5px;color:#e2e8f0}
+  .flt.active{color:#fff;background:linear-gradient(135deg,rgba(6,182,212,.3),rgba(59,130,246,.25));border-color:rgba(103,232,249,.5)}
+
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.2);border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  @media (max-width:480px){
+    .opt{padding:13px 13px;font-size:15px;gap:11px}
+    .opt .letter{width:30px;height:30px;font-size:13px}
+    .dot{width:30px;height:30px;font-size:11px}
+  }
+  @media (hover:none){.opt:hover{transform:none}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  @media print{html,body{display:none!important;visibility:hidden!important}}
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="app">
+  <div class="grid-bg"></div>
+
+  <!-- ================= SPLASH ================= -->
+  <section id="splash" class="screen active" aria-label="intro">
+    <div class="splash-orb"></div>
+    <div class="relative">
+      <svg class="splash-tooth" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <defs><linearGradient id="tg" x1="0" y1="0" x2="64" y2="64"><stop offset="0" stop-color="#a5f3fc"/><stop offset=".5" stop-color="#06b6d4"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs>
+        <path d="M20 6c-8 0-14 6-14 15 0 6 2 10 4 14 2 5 3 11 4 17 1 5 3 8 6 8 4 0 5-5 6-10 1-4 2-8 6-8s5 4 6 8c1 5 2 10 6 10 3 0 5-3 6-8 1-6 2-12 4-17 2-4 4-8 4-14 0-9-6-15-14-15-5 0-8 3-12 3s-7-3-12-3z" stroke="url(#tg)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M22 16c-3 0-6 2-7 6" stroke="#e0f2fe" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+      </svg>
+      <h1 class="splash-title" dir="rtl">
+        <span class="s-word" style="--i:0">مقدم</span>
+        <span class="s-word" style="--i:1">من</span>
+        <span class="s-word" style="--i:2">قناة</span>
+        <span class="s-word" style="--i:3">الأسهل</span>
+        <span class="s-word" style="--i:4">بطب</span>
+        <span class="s-word" style="--i:5">الأسنان</span>
+      </h1>
+      <div class="splash-sub">The Easiest in Dentistry</div>
+      <div class="splash-line"><span></span></div>
+    </div>
+  </section>
+
+  <!-- ================= REGISTRATION ================= -->
+  <section id="register" class="screen" dir="rtl" aria-label="registration">
+    <div class="wrap max-w-md">
+      <div class="glass glow-border p-6 sm:p-8">
+        <div class="flex items-center justify-between mb-6">
+          <span class="brand-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+            الأسهل بطب الأسنان
+          </span>
+          <span class="font-en text-[11px] text-slate-400 tracking-widest">BIOCHEMISTRY EXAM</span>
+        </div>
+
+        <div class="w-16 h-16 rounded-2xl grid place-items-center mb-5" style="background:linear-gradient(135deg,rgba(6,182,212,.2),rgba(59,130,246,.15));border:1px solid rgba(103,232,249,.25);box-shadow:0 0 30px -6px rgba(6,182,212,.6)">
+          <svg width="34" height="34" viewBox="0 0 64 64" fill="none"><path d="M20 6c-8 0-14 6-14 15 0 6 2 10 4 14 2 5 3 11 4 17 1 5 3 8 6 8 4 0 5-5 6-10 1-4 2-8 6-8s5 4 6 8c1 5 2 10 6 10 3 0 5-3 6-8 1-6 2-12 4-17 2-4 4-8 4-14 0-9-6-15-14-15-5 0-8 3-12 3s-7-3-12-3z" stroke="#67e8f9" stroke-width="3.5" stroke-linejoin="round"/></svg>
+        </div>
+
+        <h2 id="regWelcome" class="text-2xl sm:text-3xl font-black leading-snug mb-2">مرحباً بك في الاختبار</h2>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">سيتم ترتيب الأسئلة والاختيارات عشوائياً لكل طالب. يرجى إدخال اسمك الثلاثي بدقة، حيث سيظهر في نتيجتك وفي العلامة المائية للاختبار.</p>
+
+        <form id="regForm" novalidate autocomplete="off">
+          <label for="nameInput" class="block text-sm font-bold text-slate-300 mb-2">الاسم الثلاثي <span class="text-cyan-400">*</span></label>
+          <div class="input-wrap mb-2">
+            <input id="nameInput" class="name-input" type="text" maxlength="60" required placeholder="أدخل اسمك الثلاثي للبدء" dir="auto" spellcheck="false">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div class="flex items-center justify-between flex-wrap gap-2 min-h-[28px] mb-2">
+            <span id="genderPill" class="gender-pill hidden" title="اضغط إذا أردت تبديل اللقب"></span>
+            <p id="nameError" class="text-red-400 text-xs font-bold"></p>
+          </div>
+          <button type="submit" class="btn-primary" id="startBtn">
+            <span>ابدأ الاختبار</span><span class="font-en opacity-80 text-sm">/ Start Exam</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transform:scaleX(-1)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-slate-700/50">
+          <div class="feature"><i>🔀</i><span>أسئلة عشوائية</span></div>
+          <div class="feature"><i>🛡️</i><span>بيئة اختبار آمنة</span></div>
+          <div class="feature"><i>📊</i><span>نتيجة فورية</span></div>
+          <div class="feature"><i>✅</i><span>مراجعة تفصيلية</span></div>
+        </div>
+      </div>
+      <p class="text-center text-[11px] text-slate-500 mt-4">يُمنع تصوير الشاشة أو نسخ المحتوى أثناء الاختبار</p>
+    </div>
+  </section>
+
+  <!-- ================= EXAM ================= -->
+  <section id="exam" class="screen" aria-label="exam">
+    <div class="wrap max-w-3xl">
+      <div class="topbar glass px-4 sm:px-6 py-4 mb-4" style="border-radius:20px">
+        <div class="flex items-center justify-between gap-3 mb-3" dir="rtl">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 flex-none rounded-xl grid place-items-center" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">
+              <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><path d="M20 6c-8 0-14 6-14 15 0 6 2 10 4 14 2 5 3 11 4 17 1 5 3 8 6 8 4 0 5-5 6-10 1-4 2-8 6-8s5 4 6 8c1 5 2 10 6 10 3 0 5-3 6-8 1-6 2-12 4-17 2-4 4-8 4-14 0-9-6-15-14-15-5 0-8 3-12 3s-7-3-12-3z" stroke="#fff" stroke-width="5" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[11px] text-cyan-300 font-bold">الأسهل بطب الأسنان</div>
+              <div id="examStudent" class="text-sm font-extrabold truncate"></div>
+            </div>
+          </div>
+          <div class="flex-none text-left font-en" dir="ltr">
+            <div class="text-[10px] text-slate-400 font-semibold tracking-wider">TIME</div>
+            <div id="timer" class="text-sm font-bold text-cyan-200 tabular-nums">00:00</div>
+          </div>
+        </div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+        <div class="flex justify-between mt-2 font-en text-[11px] text-slate-400" dir="ltr">
+          <span id="progressLabel">Question 1 of 20</span>
+          <span id="answeredLabel">0 answered</span>
+        </div>
+      </div>
+
+      <div class="glass glow-border p-5 sm:p-8 quiz" id="quizCard">
+        <div id="qBody">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="q-chip" id="qCounter">Question 1 of 20</span>
+            <div class="flex items-center flex-wrap gap-2" dir="rtl">
+              <span class="changes-badge" id="changesBadge">🔄 فرص تغيير الجواب: 2 / 2</span>
+              <span class="text-xs text-slate-400 font-ar font-bold" id="qTopic"></span>
+            </div>
+          </div>
+          <div class="q-text" id="qText"></div>
+          <div id="qOptions" role="radiogroup"></div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 mt-4 pt-5 border-t border-slate-700/50">
+          <button class="btn-ghost" id="prevBtn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg>Previous
+          </button>
+          <button class="btn-primary" id="nextBtn" type="button" style="width:auto;min-width:140px">
+            <span id="nextLabel">Next</span>
+            <svg id="nextIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="glass p-4 sm:p-5 mt-4 quiz" style="border-radius:20px">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold text-slate-400 tracking-wider">QUESTION NAVIGATOR</span>
+          <button id="finishEarly" class="text-xs font-bold text-emerald-300 hover:text-emerald-200 transition" type="button">Submit Exam →</button>
+        </div>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section id="results" class="screen" aria-label="results">
+    <div class="wrap max-w-3xl">
+      <div class="glass glow-border p-6 sm:p-8 text-center" id="resultCard" dir="rtl">
+        <span class="brand-badge mb-4">نتيجة الاختبار · الأسهل بطب الأسنان</span>
+        <h2 class="text-xl sm:text-2xl font-black mt-3" id="resName"></h2>
+        <p class="text-slate-400 text-xs mt-1 font-en" id="resDate" dir="ltr"></p>
+
+        <div class="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto my-6" dir="ltr">
+          <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06b6d4"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs>
+            <circle cx="60" cy="60" r="52" fill="none" stroke-width="10" class="ring-bg"/>
+            <circle id="ring" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke="url(#rg)" class="ring-fg" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+          </svg>
+          <div class="absolute inset-0 grid place-items-center font-en">
+            <div>
+              <div class="text-4xl sm:text-5xl font-extrabold tabular-nums" id="resPct">0%</div>
+              <div class="text-slate-300 font-bold mt-1 tabular-nums" id="resScore">0 / 0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-3xl mb-1" id="resEmoji"></div>
+        <h3 class="text-lg sm:text-xl font-extrabold text-cyan-200" id="resMsg"></h3>
+        <p class="text-slate-400 text-sm mt-1 font-en" id="resMsgEn"></p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+          <div class="stat"><b class="text-emerald-400" id="stCorrect">0</b><span>إجابات صحيحة</span></div>
+          <div class="stat"><b class="text-red-400" id="stWrong">0</b><span>إجابات خاطئة</span></div>
+          <div class="stat"><b class="text-amber-400" id="stSkip">0</b><span>بدون إجابة</span></div>
+          <div class="stat"><b class="text-cyan-300" id="stTime">00:00</b><span>الوقت المستغرق</span></div>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-4" id="stViolations"></p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+          <button class="btn-primary" id="reviewBtn" type="button">مراجعة الإجابات <span class="font-en text-sm opacity-80">/ Review</span></button>
+          <button class="btn-ghost w-full" id="retryBtn" type="button">إعادة الاختبار <span class="font-en text-sm opacity-70">/ Retake</span></button>
+        </div>
+      </div>
+
+      <div class="glass glow-border p-5 sm:p-7 mt-6" id="coachCard" dir="rtl">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="c-ava" style="width:44px;height:44px;font-size:20px">🦷</div>
+          <div>
+            <div class="font-black text-lg">تعليق المساعد على أدائك</div>
+            <div class="text-xs text-slate-400">تحليل شخصي مبني على إجاباتك</div>
+          </div>
+        </div>
+        <ul id="coachList" class="coach-list"></ul>
+        <div class="mt-6">
+          <div class="text-sm font-extrabold text-slate-300 mb-3">أداؤك حسب المحاور</div>
+          <div id="topicBars"></div>
+        </div>
+      </div>
+
+      <div class="mt-6 quiz" id="reviewWrap">
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-4 px-1">
+          <h3 class="text-lg font-extrabold">Detailed Review</h3>
+          <div class="filters">
+            <button class="flt active" data-f="all" type="button">All<b id="fAll">0</b></button>
+            <button class="flt" data-f="bad" type="button">Wrong<b id="fBad">0</b></button>
+            <button class="flt" data-f="ok" type="button">Correct<b id="fOk">0</b></button>
+            <button class="flt" data-f="skip" type="button">Skipped<b id="fSkip">0</b></button>
+          </div>
+        </div>
+        <div id="reviewList"></div>
+        <p id="reviewEmpty" class="hidden text-center text-slate-400 py-10 font-ar" dir="rtl">ماكو أسئلة بهذا التصنيف 🎉</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= SECURITY & UI LAYERS ================= -->
+<div id="assistant" class="assistant" aria-live="polite">
+  <div class="as-panel" id="asPanel">
+    <div class="as-head">
+      <span class="as-name" id="asTitle">مساعد الأسهل</span>
+      <div class="as-hbtns">
+        <button class="as-ibtn" id="asMute" type="button" title="كتم الإشعارات التلقائية">🔔 تلقائي</button>
+        <button class="as-ibtn" id="asCollapse" type="button" title="طي القائمة">طي ▾</button>
+      </div>
+    </div>
+    <div class="as-body">
+      <div class="as-section-lbl"><span id="asStatusLbl">🤖 قراءة المساعد لأدائك:</span><span id="asPersonaDesc" class="text-cyan-300">يراقب أسلوبك…</span></div>
+      <div class="as-msg" id="asText"></div>
+      <div class="as-actions" id="asActions"></div>
+
+      <div class="as-tools" id="asTools">
+        <button type="button" class="as-tool" id="toolHint">💡 تلميح ذكي</button>
+        <button type="button" class="as-tool" id="toolElim">✂️ احذف خيارين (<span id="elimLeft">4</span>)</button>
+        <button type="button" class="as-tool" id="toolSimp">🇸🇦 بسّط السؤال</button>
+        <button type="button" class="as-tool" id="toolCheer">🗣️ سولف وياي</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="as-dock">
+    <button class="as-avatar" id="asAvatar" type="button" aria-label="المساعد">
+      <svg width="26" height="26" viewBox="0 0 64 64" fill="none"><path d="M20 6c-8 0-14 6-14 15 0 6 2 10 4 14 2 5 3 11 4 14 1 5 3 8 6 8 4 0 5-5 6-10 1-4 2-8 6-8s5 4 6 8c1 5 2 10 6 10 3 0 5-3 6-8 1-6 2-12 4-17 2-4 4-8 4-14 0-9-6-15-14-15-5 0-8 3-12 3s-7-3-12-3z" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/><circle cx="24" cy="24" r="3" fill="#fff"/><circle cx="40" cy="24" r="3" fill="#fff"/><path d="M25 33c4 4 10 4 14 0" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>
+      <span class="as-mood" id="asMood">🤖</span>
+      <span class="as-badge" id="asBadge">1</span>
+    </button>
+    <button class="as-pill" id="asPill" type="button">
+      <span id="asPillText">مساعد الأسهل</span>
+      <span class="text-cyan-300 text-xs">▴</span>
+    </button>
+  </div>
+</div>
+
+<div id="watermark" aria-hidden="true"></div>
+
+<div id="shield" dir="rtl" role="alert">
+  <div>
+    <div class="shield-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg>
+    </div>
+    <h3 class="text-xl sm:text-2xl font-black mb-2">تم إخفاء الاختبار لحمايته</h3>
+    <p class="text-slate-300 text-sm max-w-xs mx-auto leading-relaxed">تم رصد مغادرة نافذة الاختبار أو محاولة تصوير الشاشة. عد إلى الصفحة وانقر هنا للمتابعة.</p>
+    <p class="text-slate-500 text-xs mt-3 font-en" dir="ltr">Exam hidden for security · Return to continue</p>
+  </div>
+</div>
+
+<div id="modal" role="dialog" aria-modal="true">
+  <div class="glass glow-border p-6 sm:p-7 w-full max-w-sm text-center">
+    <div class="w-14 h-14 rounded-2xl grid place-items-center mx-auto mb-4" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35)">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h3 class="text-xl font-black mb-2" dir="rtl">تسليم الاختبار؟</h3>
+    <p class="text-slate-300 text-sm font-en mb-1" id="modalText"></p>
+    <p class="text-slate-400 text-xs mb-5" dir="rtl" id="modalTextAr"></p>
+    <div class="flex gap-3">
+      <button class="btn-ghost flex-1" id="modalCancel" type="button">Back</button>
+      <button class="btn-primary btn-submit flex-1" id="modalConfirm" type="button">Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="assertive"><span id="toastIcon">⚠️</span><span id="toastText"></span></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =====================================================================
+     QUESTIONS DATA
+     answer = index of the correct option inside "options" (before shuffle)
+     ===================================================================== */
+  const questionsData = [
+    /* ---------------- Part 1: Multiple Choice (1 – 40) ---------------- */
+    { id: 1,  question: "Which of the following is an example of an anabolic process in metabolism?",
+      options: ["Glycolysis", "Cellular respiration", "Protein synthesis", "Lipolysis"], answer: 2 },
+    { id: 2,  question: "During the fed state, which metabolic process is most active?",
+      options: ["Gluconeogenesis", "Glycogenolysis", "Glycogenesis", "Ketogenesis"], answer: 2 },
+    { id: 3,  question: "Insulin is released in response to:",
+      options: ["Low blood glucose levels", "High blood glucose levels", "Low oxygen levels", "Increased fatty acid levels"], answer: 1 },
+    { id: 4,  question: "What is the end product of glycolysis under anaerobic conditions?",
+      options: ["Lactate", "Pyruvate", "Acetyl-CoA", "Glucose"], answer: 0 },
+    { id: 5,  question: "Which molecule is considered the \"currency\" of cellular energy?",
+      options: ["ATP", "NADH", "FADH2", "Glucose"], answer: 0 },
+    { id: 6,  question: "During which phase of cellular respiration is the majority of ATP generated?",
+      options: ["Glycolysis", "Citric acid cycle", "Electron transport chain (Oxidative phosphorylation)", "Fermentation"], answer: 2 },
+    { id: 7,  question: "What is the function of glucose-6-phosphatase in gluconeogenesis?",
+      options: ["Converts glucose to glucose-6-phosphate", "Converts glucose-1-phosphate to glucose-6-phosphate", "Converts glucose-6-phosphate to free glucose", "Converts pyruvate to phosphoenolpyruvate"], answer: 2 },
+    { id: 8,  question: "One of the key enzymes in gluconeogenesis is:",
+      options: ["Aldolase", "Pyruvate kinase", "Pyruvate carboxylase", "Glucokinase"], answer: 2 },
+    { id: 9,  question: "How many NADH molecules are produced in one turn of the Krebs cycle?",
+      options: ["1", "2", "3", "4"], answer: 2 },
+    { id: 10, question: "Where does glycolysis occur in the cell?",
+      options: ["Mitochondria", "Cytoplasm", "Nucleus", "Endoplasmic reticulum"], answer: 1 },
+    { id: 11, question: "In the presence of oxygen, pyruvate is converted into which compound?",
+      options: ["Lactate", "Acetyl-CoA", "Glycogen", "Glucose"], answer: 1 },
+    { id: 12, question: "Which of the following carbohydrates cannot be digested by humans?",
+      options: ["Starch", "Sucrose", "Lactose", "Cellulose"], answer: 3 },
+    { id: 13, question: "What is the end product of the Cori cycle in the liver?",
+      options: ["Glycogen", "Lactic acid", "Glucose", "ATP"], answer: 2 },
+    { id: 14, question: "What is the primary product of glycogenolysis in muscles?",
+      options: ["Glucose-6-phosphate", "Glucose", "Lactate", "Pyruvate"], answer: 0 },
+    { id: 15, question: "How many ATP molecules are required for the synthesis of one glucose molecule through gluconeogenesis?",
+      options: ["4 ATP", "6 ATP", "8 ATP", "10 ATP"], answer: 1 },
+    { id: 16, question: "What type of bond links glucose molecules in the main chains of glycogen?",
+      options: ["α-1,4-glycosidic bonds", "β-1,4-glycosidic bonds", "α-1,6-glycosidic bonds", "β-1,6-glycosidic bonds"], answer: 0 },
+    { id: 17, question: "Which of the following is a method for diagnosing diabetes mellitus?",
+      options: ["Oral glucose tolerance test (OGTT)", "Blood gas analysis", "Urinary protein test", "Liver function tests"], answer: 0 },
+    { id: 18, question: "What is the renal threshold for glucose, above which glucose appears in urine?",
+      options: ["90 mg/dl", "120 mg/dl", "140 mg/dl", "180 mg/dl"], answer: 3 },
+    { id: 19, question: "Which hormone is responsible for increasing blood glucose by stimulating glycogenolysis and gluconeogenesis?",
+      options: ["Insulin", "Glucagon", "Growth hormone", "Adrenaline"], answer: 1 },
+    { id: 20, question: "Which of the following is the first stage of metabolic adaptation during starvation?",
+      options: ["Lipolysis", "Gluconeogenesis", "Glycogenolysis", "Acidosis"], answer: 2 },
+    { id: 21, question: "Which of the following describes gluconeogenesis?",
+      options: ["The breakdown of glucose into pyruvate", "The synthesis of glucose from non-carbohydrate sources", "The conversion of glucose to glycogen", "The conversion of glycogen to glucose"], answer: 1 },
+    { id: 22, question: "Where are triglycerides primarily stored in the body?",
+      options: ["Muscles", "Brain", "Liver", "Adipose tissue"], answer: 3 },
+    { id: 23, question: "Which of the following occurs during the fasting state?",
+      options: ["Fatty acid synthesis", "Lipogenesis", "Lipolysis", "Cholesterol synthesis"], answer: 2 },
+    { id: 24, question: "What is the chemical composition of a triglyceride?",
+      options: ["Glycerol and two fatty acids", "Glycerol and three fatty acids", "Three glycerol molecules and fatty acid chains", "Three glucose molecules and fatty acid chains"], answer: 1 },
+    { id: 25, question: "What is the primary product of lipolysis in adipose tissue?",
+      options: ["Glucose and acetyl-CoA", "Glycerol and fatty acids", "Acetyl-CoA and NADH", "ATP and acetyl-CoA"], answer: 1 },
+    { id: 26, question: "Which shuttle is used to transport fatty acyl-CoA into the mitochondria for β-oxidation?",
+      options: ["Carnitine shuttle", "Citrate shuttle", "Glucose shuttle", "Acetyl-CoA shuttle"], answer: 0 },
+    { id: 27, question: "Where does fatty acid oxidation (β-oxidation) primarily occur?",
+      options: ["Cytoplasm", "Nucleus", "Mitochondria", "Endoplasmic reticulum"], answer: 2 },
+    { id: 28, question: "Which of the following hormones stimulates fatty acid synthesis (lipogenesis)?",
+      options: ["Glucagon", "Epinephrine", "Insulin", "Cortisol"], answer: 2 },
+    { id: 29, question: "All of the following enzymes are involved in the citric acid cycle EXCEPT:",
+      options: ["Citrate synthase", "Isocitrate dehydrogenase", "α-Ketoglutarate dehydrogenase", "Pyruvate dehydrogenase"], answer: 3 },
+    { id: 30, question: "In the citric acid cycle, the only enzyme which requires FAD is:",
+      options: ["Isocitrate dehydrogenase", "α-Ketoglutarate dehydrogenase", "Succinate dehydrogenase", "Malate dehydrogenase"], answer: 2 },
+    { id: 31, question: "Which of the following statements about the structure of glycogen is FALSE?",
+      options: ["There are α-1,4 glycosidic linkages", "There are α-1,6 glycosidic linkages", "All the monosaccharides in glycogen are glucose units", "Glycogen is an unbranched polymer"], answer: 3 },
+    { id: 32, question: "The enzyme responsible for glycogen synthesis is called:",
+      options: ["Glycogen phosphorylase", "Glycogen synthase", "Glucokinase", "Glucose-6-phosphatase"], answer: 1 },
+    { id: 33, question: "The enzyme which is lacking in muscles but present in normal liver is:",
+      options: ["Glycogen phosphorylase", "Phosphoglucomutase", "Glucokinase", "Glucose-6-phosphatase"], answer: 3 },
+    { id: 34, question: "Glycogen phosphorylase is activated by:",
+      options: ["Insulin", "Glucagon only", "Epinephrine only", "Both glucagon and epinephrine"], answer: 3 },
+    { id: 35, question: "What is the net ATP production from one molecule of glucose in anaerobic glycolysis?",
+      options: ["2 ATP", "8 ATP", "38 ATP", "12 ATP"], answer: 0 },
+    { id: 36, question: "Type I Diabetes Mellitus is characterized by:",
+      options: ["Insulin resistance in peripheral tissues", "Absolute deficiency of insulin due to autoimmune destruction of β-cells", "Late onset after the age of 40", "Absence of ketoacidosis"], answer: 1 },
+    { id: 37, question: "Which sugar is the main energy source for human spermatozoa (semen)?",
+      options: ["Glucose", "Fructose", "Galactose", "Ribose"], answer: 1 },
+    { id: 38, question: "The process of forming ketone bodies from excess Acetyl-CoA is called:",
+      options: ["Ketolysis", "Ketogenesis", "Lipogenesis", "Glycogenesis"], answer: 1 },
+    { id: 39, question: "Which vitamin is the precursor for the coenzyme NAD⁺ involved in redox reactions?",
+      options: ["Vitamin B1 (Thiamine)", "Vitamin B2 (Riboflavin)", "Vitamin B3 (Niacin)", "Vitamin B5 (Pantothenic acid)"], answer: 2 },
+    { id: 40, question: "Glucose transport into red blood cells (RBCs) is:",
+      options: ["Insulin-dependent", "Insulin-independent", "Active transport requiring ATP", "Mediated by sodium-glucose linked transporters only"], answer: 1 },
+
+    /* ---------------- Part 2: Matching items converted to MCQ ---------------- */
+    // Set 1 – ATP yield
+    { id: 41, question: "Complete oxidation of one molecule of palmitic acid (C16) yields:",
+      options: ["2 ATP", "22 ATP", "12 ATP", "129 ATP"], answer: 3 },
+    { id: 42, question: "Complete oxidation of one molecule of glucose in RBCs yields:",
+      options: ["2 ATP", "22 ATP", "12 ATP", "129 ATP"], answer: 0 },
+    { id: 43, question: "Complete oxidation of one molecule of glycerol yields:",
+      options: ["2 ATP", "22 ATP", "12 ATP", "129 ATP"], answer: 1 },
+    { id: 44, question: "Complete oxidation of one molecule of Acetyl-CoA yields:",
+      options: ["2 ATP", "22 ATP", "12 ATP", "129 ATP"], answer: 2 },
+    // Set 2 – Lactose / Lactate terminology
+    { id: 45, question: "One of the intestinal disaccharides is:",
+      options: ["Lactose", "Lactate", "Lactase", "Lactic acidosis"], answer: 0 },
+    { id: 46, question: "Increased blood lactate above the normal level is called:",
+      options: ["Lactose", "Lactate", "Lactase", "Lactic acidosis"], answer: 3 },
+    { id: 47, question: "Milk sugar is:",
+      options: ["Lactose", "Lactate", "Lactase", "Lactic acidosis"], answer: 0 },
+    { id: 48, question: "The end product of anaerobic glycolysis is:",
+      options: ["Lactose", "Lactate", "Lactase", "Lactic acidosis"], answer: 1 },
+    // Set 3 – Carbohydrate metabolic pathways
+    { id: 49, question: "Synthesis of glucose from non-carbohydrate sources is called:",
+      options: ["Glycogenesis", "Glycolysis", "Gluconeogenesis", "Glycogenolysis"], answer: 2 },
+    { id: 50, question: "Breakdown of glycogen into glucose is called:",
+      options: ["Glycogenesis", "Glycolysis", "Gluconeogenesis", "Glycogenolysis"], answer: 3 },
+    { id: 51, question: "Synthesis of glycogen from glucose is called:",
+      options: ["Glycogenesis", "Glycolysis", "Gluconeogenesis", "Glycogenolysis"], answer: 0 },
+    { id: 52, question: "Breakdown of glucose into pyruvate is called:",
+      options: ["Glycogenesis", "Glycolysis", "Gluconeogenesis", "Glycogenolysis"], answer: 1 },
+    // Set 4 – Enzymes
+    { id: 53, question: "Which enzyme catalyzes the condensation of acetyl-CoA and oxaloacetate to form citrate?",
+      options: ["Hexokinase", "Citrate synthase", "Glycogen synthase", "Glucose-6-phosphatase"], answer: 1 },
+    { id: 54, question: "Which enzyme adds glucose units from UDP-glucose to form glycogen?",
+      options: ["Hexokinase", "Citrate synthase", "Glycogen synthase", "Glucose-6-phosphatase"], answer: 2 },
+    { id: 55, question: "Which enzyme converts glucose to glucose-6-phosphate?",
+      options: ["Hexokinase", "Citrate synthase", "Glycogen synthase", "Glucose-6-phosphatase"], answer: 0 },
+    { id: 56, question: "Which enzyme converts glucose-6-phosphate to glucose?",
+      options: ["Hexokinase", "Citrate synthase", "Glycogen synthase", "Glucose-6-phosphatase"], answer: 3 },
+    // Set 5 – Deficiency disorders
+    { id: 57, question: "Glucose-6-phosphatase deficiency leads to:",
+      options: ["Hemolytic anemia", "Type I Diabetes Mellitus", "Type II Diabetes Mellitus", "Glycogen storage disease Type I (von Gierke disease)"], answer: 3 },
+    { id: 58, question: "Absolute deficiency of insulin leads to:",
+      options: ["Hemolytic anemia", "Type I Diabetes Mellitus", "Type II Diabetes Mellitus", "Glycogen storage disease Type I (von Gierke disease)"], answer: 1 },
+    { id: 59, question: "Relative deficiency of insulin leads to:",
+      options: ["Hemolytic anemia", "Type I Diabetes Mellitus", "Type II Diabetes Mellitus", "Glycogen storage disease Type I (von Gierke disease)"], answer: 2 },
+    { id: 60, question: "Pyruvate kinase deficiency leads to:",
+      options: ["Hemolytic anemia", "Type I Diabetes Mellitus", "Type II Diabetes Mellitus", "Glycogen storage disease Type I (von Gierke disease)"], answer: 0 },
+    // Set 6 – ATP yield (glucose / pyruvate / acetyl-CoA)
+    { id: 61, question: "Complete oxidation of one molecule of glucose in a liver cell yields:",
+      options: ["2 ATP", "12 ATP", "15 ATP", "38 ATP"], answer: 3 },
+    { id: 62, question: "Oxidation of one molecule of glucose in RBCs yields:",
+      options: ["2 ATP", "12 ATP", "15 ATP", "38 ATP"], answer: 0 },
+    { id: 63, question: "Complete oxidation of one molecule of pyruvate yields:",
+      options: ["2 ATP", "12 ATP", "15 ATP", "38 ATP"], answer: 2 },
+    { id: 64, question: "Complete oxidation of one molecule of Acetyl-CoA (via the Krebs cycle) yields:",
+      options: ["2 ATP", "12 ATP", "15 ATP", "38 ATP"], answer: 1 }
+  ];
+
+  /* =====================================================================
+     TOPICS (for the personal performance analysis)
+     ===================================================================== */
+  const TOPICS = {
+    meta: 'الأيض والهرمونات',
+    glyco: 'التحلل السكري ودورة كربس',
+    gng: 'استحداث الجلوكوز',
+    glycogen: 'الجلايكوجين',
+    lipid: 'أيض الدهون',
+    clinic: 'السكريات والحالات السريرية',
+    atp: 'حساب الـ ATP'
+  };
+  const TOPIC_OF = {};
+  [
+    ['meta',     [1, 2, 3, 5, 19, 20, 23, 28]],
+    ['glyco',    [4, 6, 9, 10, 11, 29, 30, 35, 39, 48, 52, 53, 55]],
+    ['gng',      [7, 8, 13, 15, 21, 49, 56]],
+    ['glycogen', [14, 16, 31, 32, 33, 34, 50, 51, 54]],
+    ['lipid',    [22, 24, 25, 26, 27, 38]],
+    ['clinic',   [12, 17, 18, 36, 37, 40, 45, 46, 47, 57, 58, 59, 60]],
+    ['atp',      [41, 42, 43, 44, 61, 62, 63, 64]]
+  ].forEach((pair) => pair[1].forEach((id) => { TOPIC_OF[id] = pair[0]; }));
+
+  /* =====================================================================
+     SOLUTION COMMENTS (shown in the review after submitting)
+     ===================================================================== */
+  const EXPLANATIONS = {
+    1: 'الأيض البنائي (Anabolism) يبني جزيئات كبيرة من جزيئات صغيرة ويستهلك طاقة، مثل تصنيع البروتين. أما Glycolysis و Lipolysis والتنفس الخلوي فكلها عمليات هدمية (Catabolic).',
+    2: 'بعد الأكل يرتفع الإنسولين، فيخزّن الجسم الجلوكوز الزائد على شكل جلايكوجين (Glycogenesis). باقي الخيارات تنشط وقت الصيام.',
+    3: 'ارتفاع سكر الدم يحفّز خلايا بيتا في البنكرياس على إفراز الإنسولين حتى ينزّل السكر.',
+    4: 'بغياب الأوكسجين يتحول البيروفيت إلى لاكتيت بواسطة إنزيم LDH، وهذا يعيد توليد NAD⁺ حتى يستمر التحلل السكري.',
+    5: 'الـ ATP هو "عملة الطاقة" لأن روابط الفوسفات بيه تخزن طاقة تنطلق بسهولة لتشغيل تفاعلات الخلية.',
+    6: 'سلسلة نقل الإلكترونات (الفسفرة التأكسدية) تنتج أغلب الـ ATP باستخدام NADH و FADH₂ القادمة من المراحل السابقة.',
+    7: 'Glucose-6-phosphatase يشيل مجموعة الفوسفات من G6P ويحرر جلوكوز حر للدم، وهي آخر خطوة في استحداث الجلوكوز.',
+    8: 'Pyruvate carboxylase يحوّل البيروفيت إلى Oxaloacetate، وهو من الإنزيمات المفتاحية لاستحداث الجلوكوز. أما Pyruvate kinase و Glucokinase فهي إنزيمات التحلل السكري.',
+    9: 'كل دورة كربس تنتج: 3 NADH + 1 FADH₂ + 1 GTP + 2 CO₂.',
+    10: 'التحلل السكري يحدث في السايتوبلازم، بينما دورة كربس وسلسلة نقل الإلكترونات في المايتوكوندريا.',
+    11: 'بوجود الأوكسجين يدخل البيروفيت المايتوكوندريا ويتحول إلى Acetyl-CoA بواسطة Pyruvate dehydrogenase.',
+    12: 'الإنسان ما يملك إنزيم يكسر روابط β-1,4 الموجودة بالسليلوز، لذلك ما ينهضم ويعتبر ألياف غذائية.',
+    13: 'بدورة كوري ينتقل اللاكتيت من العضلات للكبد، والكبد يحوّله إلى جلوكوز يرجع للعضلات.',
+    14: 'تحلل جلايكوجين العضلة ينتج Glucose-1-phosphate ويتحول إلى Glucose-6-phosphate. العضلة ما بيها Glucose-6-phosphatase، فتستخدم G6P داخلها وما تطلق جلوكوز حر.',
+    15: 'تصنيع جلوكوز واحد من 2 بيروفيت يحتاج 6 روابط عالية الطاقة: 4 ATP + 2 GTP.',
+    16: 'السلاسل الرئيسية للجلايكوجين مرتبطة بروابط α-1,4، أما نقاط التفرع فبروابط α-1,6.',
+    17: 'اختبار تحمّل الجلوكوز الفموي (OGTT) من الطرق المعتمدة لتشخيص السكري، إضافةً إلى FBG و HbA1c.',
+    18: 'العتبة الكلوية للجلوكوز حوالي 180 mg/dl؛ فوقها الكلية ما تكدر تعيد امتصاص كل الجلوكوز فيظهر بالإدرار.',
+    19: 'الجلوكاجون يرفع سكر الدم عن طريق تحفيز تحلل الجلايكوجين واستحداث الجلوكوز في الكبد.',
+    20: 'أول شي يلجأ له الجسم بالجوع هو مخزون جلايكوجين الكبد (Glycogenolysis)، بعدها استحداث الجلوكوز، وبعدها تحلل الدهون.',
+    21: 'Gluconeogenesis = تصنيع جلوكوز جديد من مصادر غير سكرية مثل اللاكتيت والجلسرول والأحماض الأمينية.',
+    22: 'الدهون الثلاثية تتخزن بشكل رئيسي في النسيج الدهني (Adipose tissue).',
+    23: 'وقت الصيام ينخفض الإنسولين ويرتفع الجلوكاجون، فتتحلل الدهون (Lipolysis) حتى توفر طاقة.',
+    24: 'الدهن الثلاثي = جزيء جلسرول واحد مرتبط بثلاث أحماض دهنية (ومن هنا جاء الاسم Tri-glyceride).',
+    25: 'Lipolysis يكسر الدهون الثلاثية إلى جلسرول وأحماض دهنية حرة.',
+    26: 'الأحماض الدهنية طويلة السلسلة تدخل المايتوكوندريا عن طريق Carnitine shuttle.',
+    27: 'أكسدة بيتا (β-oxidation) تحدث في مطرس المايتوكوندريا (Mitochondrial matrix).',
+    28: 'الإنسولين هرمون بنائي يحفّز تصنيع الأحماض الدهنية، بينما الجلوكاجون والأدرينالين والكورتيزول يحفزون الهدم.',
+    29: 'Pyruvate dehydrogenase يربط التحلل السكري بدورة كربس، بس هو مو جزء من الدورة نفسها.',
+    30: 'Succinate dehydrogenase هو الإنزيم الوحيد بالدورة اللي يستخدم FAD، وهو نفسه Complex II بسلسلة نقل الإلكترونات.',
+    31: 'الجلايكوجين متفرّع جداً بسبب روابط α-1,6، لذلك عبارة "غير متفرع" هي العبارة الخاطئة.',
+    32: 'Glycogen synthase هو الإنزيم المنظّم لتصنيع الجلايكوجين، ويضيف وحدات الجلوكوز من UDP-glucose.',
+    33: 'العضلات ما بيها Glucose-6-phosphatase، لذلك جلايكوجين العضلة يخدمها هي فقط وما يرفع سكر الدم.',
+    34: 'الجلوكاجون (بالكبد) والأدرينالين (بالكبد والعضلات) ينشّطون Glycogen phosphorylase عن طريق cAMP، أما الإنسولين فيثبّطه.',
+    35: 'التحلل السكري اللاهوائي ينتج 4 ATP ويستهلك 2، فالصافي = 2 ATP.',
+    36: 'السكري النوع الأول سببه تدمير مناعي ذاتي لخلايا بيتا، فيصير نقص مطلق بالإنسولين، وغالباً يظهر بعمر صغير ومعرّض للحماض الكيتوني.',
+    37: 'الفركتوز الموجود بالسائل المنوي هو مصدر الطاقة الرئيسي للحيوانات المنوية.',
+    38: 'Ketogenesis = تكوين الأجسام الكيتونية من الـ Acetyl-CoA الزائد بالكبد، خصوصاً بالصيام الطويل والسكري غير المنضبط.',
+    39: 'فيتامين B3 (النياسين) يدخل بتركيب NAD⁺ و NADP⁺، أما B2 فيدخل بتركيب FAD.',
+    40: 'دخول الجلوكوز لكريات الدم الحمر يتم عن طريق GLUT-1 وما يحتاج إنسولين.',
+    41: 'البالمتيك (C16) يعطي 8 Acetyl-CoA و 7 FADH₂ و 7 NADH = 131 ATP، ناقص 2 للتنشيط = 129 ATP.',
+    42: 'كريات الدم الحمر ما بيها مايتوكوندريا، فتعتمد على التحلل السكري اللاهوائي فقط = 2 ATP.',
+    43: 'الأكسدة الكاملة للجلسرول تعطي حوالي 22 ATP (حسب الحساب الكلاسيكي). ملاحظة: مفتاح الإجابة الأصلي كان مبدّل بين 12 و 22.',
+    44: 'كل Acetyl-CoA بدورة كربس يعطي: 3 NADH (9) + 1 FADH₂ (2) + 1 GTP (1) = 12 ATP.',
+    45: 'اللاكتوز سكر ثنائي (Disaccharide) يتكون من جلوكوز + جالاكتوز. انتبه: Lactase هو الإنزيم اللي يهضمه.',
+    46: 'ارتفاع اللاكتيت بالدم فوق المستوى الطبيعي يسبب الحماض اللاكتيكي (Lactic acidosis).',
+    47: 'سكر الحليب هو اللاكتوز (Lactose).',
+    48: 'الناتج النهائي للتحلل السكري اللاهوائي هو اللاكتيت (Lactate).',
+    49: 'Gluco-neo-genesis = تكوين جلوكوز جديد من مصادر غير سكرية.',
+    50: 'Glycogeno-lysis = تكسير الجلايكوجين إلى جلوكوز.',
+    51: 'Glycogen-esis = تكوين الجلايكوجين من الجلوكوز.',
+    52: 'Glyco-lysis = تكسير الجلوكوز إلى بيروفيت.',
+    53: 'Citrate synthase يدمج Acetyl-CoA مع Oxaloacetate ويكوّن السترات، وهي أول خطوة بدورة كربس.',
+    54: 'Glycogen synthase يضيف وحدات الجلوكوز من UDP-glucose بروابط α-1,4.',
+    55: 'Hexokinase (وبالكبد Glucokinase) يفسفر الجلوكوز إلى Glucose-6-phosphate، وهي أول خطوة بالتحلل السكري.',
+    56: 'Glucose-6-phosphatase يحوّل G6P إلى جلوكوز حر، وموجود بالكبد والكلية فقط.',
+    57: 'نقص Glucose-6-phosphatase يسبب مرض فون جيركه (GSD Type I): هبوط سكر شديد وتضخم بالكبد.',
+    58: 'النقص المطلق بالإنسولين = السكري النوع الأول.',
+    59: 'النقص النسبي بالإنسولين (أو مقاومة الإنسولين) = السكري النوع الثاني.',
+    60: 'نقص Pyruvate kinase يقلل الـ ATP بكريات الدم الحمر فتتكسر، ويصير فقر دم انحلالي (Hemolytic anemia).',
+    61: 'الأكسدة الكاملة لجلوكوز واحد = 38 ATP: التحلل السكري 8 + Pyruvate dehydrogenase 6 + دورتين كربس 24.',
+    62: 'كريات الدم الحمر تعتمد على التحلل السكري اللاهوائي فقط = 2 ATP.',
+    63: 'البيروفيت ← Acetyl-CoA يعطي NADH واحد (3 ATP) + 12 من دورة كربس = 15 ATP.',
+    64: '3 NADH (9) + 1 FADH₂ (2) + 1 GTP (1) = 12 ATP.'
+  };
+
+  /* =====================================================================
+     HELPERS
+     ===================================================================== */
+  const $ = (id) => document.getElementById(id);
+  const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  function randInt(max) {
+    if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+      const buf = new Uint32Array(1);
+      const limit = Math.floor(0x100000000 / max) * max;
+      let x;
+      do { window.crypto.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+      return x % max;
+    }
+    return Math.floor(Math.random() * max);
+  }
+
+  // Fisher–Yates shuffle (returns a new array)
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = randInt(i + 1);
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function escapeXml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
+  }
+
+  function fmtTime(sec) {
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  /* =====================================================================
+     STATE
+     ===================================================================== */
+  const state = {
+    phase: 'splash',
+    name: '',
+    gender: 'm',      // 'm' | 'f' (auto-detected from student's first name)
+    persona: 'smart', // automatically adapts: 'smart' | 'lazy'
+    autoSortedEasy: false,
+    autoSortedUnanswered: false,
+    streakRight: 0,
+    streakWrong: 0,
+    skipCount: 0,
+    usedPools: {},
+    autoPopup: true,
+    changesRemaining: 2,
+    elimRemaining: 4,
+    eliminated: {},   // questionId -> [optionIndices]
+    questions: [],
+    answers: [],
+    index: 0,
+    startedAt: 0,
+    finishedAt: 0,
+    violations: 0,
+    timerId: null,
+    ms: {},
+    warned: 0,
+    qShownAt: 0,
+    idleT: null
+  };
+
+  // Difficulty score (1 = easy, 2 = medium, 3 = hard) for automatic smart ordering
+  const DIFF_OF = {};
+  [
+    [1, [1, 3, 5, 10, 12, 17, 22, 24, 35, 37, 42, 45, 47, 48, 50, 51, 52, 58, 59, 62]],
+    [2, [2, 4, 6, 9, 11, 13, 16, 18, 19, 20, 21, 23, 25, 27, 28, 32, 34, 38, 39, 40, 44, 46, 49, 53, 54, 55, 56, 61, 64]],
+    [3, [7, 8, 14, 15, 26, 29, 30, 31, 33, 36, 41, 43, 57, 60, 63]]
+  ].forEach((pair) => pair[1].forEach((id) => { DIFF_OF[id] = pair[0]; }));
+
+  /* =====================================================================
+     IRAQI GENDER DETECTION & SMART OBSERVER BRAIN
+     ===================================================================== */
+  const FEMALE_NAMES = [
+    'زهراء','الزهراء','فاطمة','فاطمه','زينب','مريم','نور','سارة','ساره','سارا','رقية','رقيه','بنين','حنين','آية','ايه','آيه',
+    'تبارك','طيبة','طيبه','غدير','هدى','ندى','سجى','ضحى','رغد','شهد','رسل','إيمان','ايمان','أمل','امل','آمال','امال',
+    'أسماء','اسماء','إسراء','اسراء','عذراء','حوراء','بيادر','دعاء','بتول','البتول','رباب','يقين','غفران','أفراح','افراح',
+    'نبأ','نبا','مروة','مروه','صفا','مينا','دينا','لينا','رانيا','ريم','ريما','سمر','قمر','هبة','هبه','آمنة','امنة','امنه',
+    'علا','حلا','رنا','منى','سحر','فرح','مرح','عبير','هديل','سالي','نرجس','زهور','ورود','وعود','عهود','خلود','العنود','جود','ود',
+    'آيات','ايات','ملاك','ملك','أفنان','افنان','جنان','إيناس','ايناس','أنسام','انسام','يسر','يسرى','بشرى','ذكرى','لبنى','سلوى','نجوى','تقوى','فدوى','أروى','اروى','مأوى','ماوى',
+    'شمس','تقى','رؤى','لمى','جنى','صبا','ربى','ربا','سرى','سرا','شذى','شذا','مها','رشا','سهى','سها','نهى','نها','غنى','سنا','هنا','وفا',
+    'لقاء','وفاء','ولاء','شيماء','ميساء','علياء','تمارا','تمارة','ديما','ديمة','ديمه','سيما','سما','سماء','آلاء','الاء','نداء','فداء','رواء','بيداء','غيداء','نجلاء','عفراء','شهلاء','حسناء','لمياء','فيحاء','رميثاء','خنساء','هيفاء','إهداء','اهداء','ثناء','رجاء','براء',
+    'دارين','لجين','سديم','رتاج','تاج','رحمة','رحمه','نعمة','نعمه','نسمة','نسمه','بسمة','بسمه','درة','دره','سدرة','سدره','دانة','دانه','دانا','جمانة','جمانه',
+    'رزان','روان','ليان','بيان','كيان','أديان','اديان','نوران','جيهان','ناريمان','ألحان','الحان','أشجان','اشجان','وجدان','غزلان','مرجان','برهان',
+    'مودة','موده','مآرب','مارب','عسل','غزل','أزل','ازل','إيلاف','ايلاف','أطياف','اطياف','ضفاف','عفاف','سلاف','أريج','اريج',
+    'نوال','منال','دلال','وصال','ابتهال','اعتدال','سهاد','مهاد','وداد','سعاد','أبعاد','ابعاد','اعتماد','بلقيس','فردوس','سندس','لميس','نورس',
+    'إخلاص','اخلاص','ملاذ','حنان','يارا','لارا','تالا','لانا','مايا','نايا','هيا','تيا','ميا','آسيا','اسيا','صوفيا','داليا','كاميليا','ماريا','ميرفت','نادين','نيفين','تولين','لارين','سدين','عرين','رنين','صابرين','سابرين','ياسمين','نرمين','سيرين','نسرين','شيرين',
+    'تسنيم','رنيم','ترانيم','سلسبيل','كوثر','هاجر','هند','سجود','تغريد','مواعيد','أغاريد','اغاريد','بلسم','زمزم','ميسم',
+    'ابتسام','ابتهاج','انتصار','انتظار','افتخار','انشراح','انسجام','إلهام','الهام','أحلام','احلام','أنعام','انعام','إقبال','اقبال','أريام','اريام','ريام','هيام','وئام','مرام','غرام','ريهام','سهام',
+    'أماني','اماني','تهاني','أغاني','اغاني','أفكار','افكار','أزهار','ازهار','أنوار','انوار','أسرار','اسرار','أبرار','ابرار','إيثار','ايثار','منار','نوار','جواهر','بشائر','أزاهر',
+    'غسق','رفل','رند','غصون','شجون','عيون','فنون','مزون','سكون','نغم','ميس','رويدة','رويده','رافدة','راوية','رحاب','رضاب','شروق','غروب','بدور','شموع','ينابيع',
+    'زينة','زينه','سمية','سميه','صفية','صفيه','خديجة','خديجه','عائشة','عائشه','حفصة','حفصه','ميمونة','ميمونه','أميمة','اميمه','حليمة','حليمه','كريمة','كريمه','سليمة','سليمه','رحيمة','رحيمه','فهيمة','فهيمه','نعيمة','نعيمه','أنيسة','انيسه','نفيسة','نفيسه','أميرة','اميره','سميرة','سميره','منيرة','منيره','شهيرة','شهيره','غادة','غاده','ماجدة','ماجده','ساجدة','ساجده','خالدة','خالده','رائدة','رائده','فائزة','فائزه','عائدة','عائده','روضة','روضه','نهضة','نهضه','ومضة','ومضه','بانة','بانه','لينة','لينه','نجمة','نجمه','وردة','ورده','شهدة','شهده','رغدة','رغده','شذرة','شذره','ثريا','دنيا','عليا','رؤيا','زكية','زكيه','فوزية','فوزيه','سعدية','سعديه','نورية','نوريه','بدرية','بدريه','شكرية','شكريه','صبرية','صبريه','لطفية','لطفيه','فتحية','فتحيه','بهية','بهيه','وفية','وفيه','تقية','تقيه','علوية','علويه','جنات','مسرات','نسمات','نفحات','ذكريات','أمنيات','امنيات'
+  ];
+
+  const MALE_NAMES = [
+    'محمد','أحمد','احمد','علي','حسين','الحسين','حسن','الحسن','عباس','العباس','حيدر','حيدرة','حيدره','كرار','جعفر','باقر','الباقر','كاظم','الكاظم','صادق','الصادق','جواد','الجواد','هادي','الهادي','مهدي','المهدي','منتظر','المنتظر','سجاد','السجاد','رضا','الرضا','موسى','عيسى','يحيى','زكريا','طه','مقتدى','مجتبى','مرتضى','مصطفى','المصطفى','مرتجى','مهتدى','مثنى','المثنى','معلى',
+    'حمزة','حمزه','طلحة','طلحه','أسامة','اسامه','معاوية','معاويه','حذيفة','حذيفه','عكرمة','عكرمه','قتيبة','قتيبه','عبيدة','عبيده','حارثة','حارثه','عقبة','عقبه','شيبة','شيبه','قتادة','قتاده','سلامة','سلامه','جمعة','جمعه','خليفة','خليفه','عطية','عطيه','عطا','وجيه','نبيه','فقيه',
+    'أمير','امير','أمين','امين','أمجد','امجد','إمام','امام','أيمن','ايمن','أنس','انس','أوس','اوس','أيسر','ايسر','أكرم','اكرم','أشرف','اشرف','إبراهيم','ابراهيم','إسماعيل','اسماعيل','إسحاق','اسحاق','إلياس','الياس','إدريس','ادريس','آدم','ادم','آصف','اصف','أصيل','اصيل','أثير','اثير','أزهر','ازهر','أنور','انور','أرشد','ارشد','أدهم','ادهم','أركان','اركان','أيوب','ايوب',
+    'علاء','بهاء','ضياء','صفاء','عطاء','عدي','قصي','لؤي','زيد','زين','عمر','عثمان','بكر','خالد','وليد','سعد','سعيد','فهد','قيس','ليث','غيث','عون','حميد','مجيد','رشيد','فريد','شهيد','سديد','عقيل','نبيل','جميل','جليل','خليل','كميل','نوفل','فيصل','طلال','بلال','هلال','جلال','جمال','كمال','نضال','منهل','مهند','مؤيد','مؤمل','مخلد','مراد','ماجد','واجد','ساجد','حامد','محمود','مسعود','منصور','داود','داوود','سليمان','سلمان','سلطان','سفيان','مروان','صفوان','عدنان','قحطان','غسان','حسان','إحسان','احسان','عرفان','برهان','زيدان','عمران','لقمان','نعمان','رضوان','نشوان','ريان','كنان','سنان','همام','هشام','عصام','وسام','حسام','بسام','ضرغام','مقدام','صدام','سلام','إسلام','اسلام','ياسر','عمار','بشار','نزار','مختار','ذوالفقار','فقار','جبار','ستار','غفار','كفاح','فلاح','صلاح','صباح','نجاح','وضاح','رباح','يوسف','يونس','يعقوب','هارون','مامون','مأمون','خلدون','زيدون','سعدون','حسون','علاوي','حمودي','عبودي','حسوني','كريم','حكيم','حليم','سليم','وسيم','نسيم','نديم','تميم','قاسم','جاسم','باسم','حازم','عاصم','هاشم','غانم','سالم','ناظم','حكمت','مدحت','رفعت','طلعت','نشأت','عزت','بهجت','رأفت','رافت','ثروت','صفوت','جودت','عرفات','بركات','فرات','ياسين','معين','متين','رصين','مبين','شاهين','فرهاد','شيرزاد','آزاد','دلشاد','نيجيرفان','سيوان','كاروان','مريوان','شوان','بافي','ريبوار','سرمد','تيمور','سيف','مهيمن','مظفر','مقداد','ميثم','ماهر','مشتاق','مناف','مضر','معن','معاذ',' منذر','منذر','مروان','مازن','مالك','مناف','وائل','نائل','رائد','قائد','سائد','عايد','عائد','شاكر','صابر','جابر','عامر','ثامر','سامر','غامر','ظافر','طاهر','زاهر','باهر','ساهر','فاهم','حارث','وارث','ثابت','نابت','صائب','غالب','طالب','راغب','عبدالله','نصرالله','فضل','فضيل'
+  ];
+
+  const FEMALE_EN = [
+    'zahraa','zahra','fatima','fatimah','zainab','zaynab','maryam','mariam','noor','nour','sara','sarah','ruqaya','ruqayah','baneen','haneen','aya','ayah',
+    'tabarak','taiba','teeba','ghadeer','huda','nada','saja','duha','raghad','shahad','shahd','rusul','iman','eman','amal','asmaa','israa','esraa','athraa','hawraa','dua','duaa','batool','rabab','yaqeen','ghufran','afrah','naba','nabaa','marwa','marwah','safa','mina','meena','dina','lena','lina','rania','reem','rima','samar','qamar','hiba','hibah','ola','hala','rana','muna','mona','sahar','farah','marah','abeer','hadeel','sally','narjis','malak','afnan','jinan','inas','enas','ansam','yusra','bushra','shams','tuqa','ruaa','lama','jana','saba','liqaa','wafaa','walaa','shaimaa','shaymaa','maysaa','alyaa','tamara','dima','deema','sama','samaa','dareen','lujain','sadeem','ritaj','retaj','rahma','nasma','basma','durra','sidra','dana','jumana','razan','rawan','layan','bayan','kayan','adyan','ahood','khulood','wurood','jood','mawada','asal','ghazal','azal','elaf','ilaf','atyaf','areej','nawal','manal','dalal','wisal','ibtihal','suhad','widad','suad','bilqees','firdaws','sundus','ikhlas','malath','hanan','lubna','salwa','najwa','taqwa','fadwa','yara','lara','sereen','nisreen','shereen','yasmeen','yasmin','narmeen','maria','maha','rasha','shatha','suha','soha','nuha','noha','ruba','sura','rula','ghada','ghasaq','ghaidaa','rafal','riyam','rand','rawaa','ruwaida','riham','reham','alaa','azhar','anwar','intisar','ibtisam','amira','ameera','amani','ahlam','taghreed','tasneem','salsabeel','kawthar','manar','mays','nagham','hajar','hind','hiyam','haifaa','wijdan','wasan','wiam','zaina','zeina','amna','amina','sumaya','khadija','aisha','halima','karima','samira','munira','majida','khalida','faiza','rawda','bana','warda','najma','dunya','donia','alia','roya','thuraya'
+  ];
+  const MALE_EN = [
+    'mohammed','muhammad','mohamed','ahmed','ahmad','ali','hussein','hussain','hassan','hasan','abbas','haider','hayder','karrar','jaafar','jafar','baqir','kadhim','kazim','sadiq','jawad','hadi','mahdi','mehdi','muntadher','muntazar','sajjad','sajad','ridha','redha','reza','mousa','musa','issa','isa','yahya','zakaria','taha','muqtada','mujtaba','murtadha','murtada','mustafa','mostafa','hamza','hamzah','talha','osama','usama','huzaifa','obaidah','qutaiba','ammar','yasir','yasser','omar','umar','uthman','othman','bakr','khalid','khaled','waleed','walid','saad','saeed','fahad','qais','laith','ghaith','hameed','majeed','rasheed','fareed','aqeel','nabeel','jameel','khaleel','faisal','talal','bilal','hilal','jalal','jamal','kamal','muhannad','mohanad','moayad','moamal','murad','majid','hamid','mahmoud','masoud','dawood','sulaiman','salman','sultan','sufyan','marwan','safwan','adnan','ghassan','hassan','ihsan','burhan','zaidan','imran','luqman','numan','radwan','rayan','kinan','sinan','humam','hisham','issam','wissam','wisam','hussam','husam','bassam','dhurgham','saddam','salam','islam','bashar','nizar','mukhtar','jabbar','sattar','salah','sabah','falah','yousif','yousef','yusuf','younis','yaqoob','ayoub','haroon','mamoon','khaldoon','kareem','karim','hakeem','haleem','saleem','waseem','naseem','nadeem','tameem','qasim','jasim','basim','hazim','asim','hashim','salim','nadhim','yaseen','yasin','shahin','farhad','sarmad','saif','muhaiman','mudhafar','miqdad','maitham','maher','mushtaq','munaf','maadh','mundher','mazin','malik','wael','raed','qaed','shakir','sabir','jabir','amer','thamer','samer','dhafir','taher','zaher','harith','thabit','ghalib','talib','ameer','amir','ameen','amin','amjad','ayman','anas','aws','akram','ashraf','ibrahim','ismail','ishaq','ilyas','idris','adam','aseel','atheer','azhar','anwar','arshad','adham','arkan','alaa','bahaa','dhiyaa','diaa','safaa','ataa','uday','qusay','luay','zaid','zayd','zain','abdullah','abdallah','abdulah','abdluh','abdulrahman','abdulaziz','abdulkarim','abdulhussein','abdulzahra','abdulameer'
+  ];
+
+  function normArWord(w) {
+    return String(w || '')
+      .replace(/[\u064B-\u065F\u0670\u0640.,،؛:!؟"'()[\]{}-]/g, '')
+      .replace(/[أإآٱ]/g, 'ا')
+      .replace(/ؤ/g, 'و')
+      .replace(/ئ/g, 'ي')
+      .trim();
+  }
+  function normArHaa(w) {
+    return normArWord(w).replace(/ة$/g, 'ه');
+  }
+
+  const FEMALE_SET = {};
+  FEMALE_NAMES.forEach((n) => { FEMALE_SET[normArHaa(n)] = true; });
+  const MALE_SET = {};
+  MALE_NAMES.forEach((n) => { MALE_SET[normArHaa(n)] = true; });
+  const FEMALE_EN_SET = {};
+  FEMALE_EN.forEach((n) => { FEMALE_EN_SET[n.toLowerCase()] = true; });
+  const MALE_EN_SET = {};
+  MALE_EN.forEach((n) => { MALE_EN_SET[n.toLowerCase()] = true; });
+
+  function parseStudentIdentity(fullName) {
+    const clean = String(fullName || '').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/\s+/g, ' ').trim();
+    if (!clean) return { gender: 'm', firstName: 'بطل' };
+    const rawParts = clean.split(' ').filter(Boolean);
+    const normParts = rawParts.map(normArWord);
+
+    // 1) Check explicit leading title (دكتورة / دكتور / طالبة / طالب / ست / سيد / ام / ابو)
+    let explicitGender = null;
+    let idx = 0;
+    const p0 = normArHaa(rawParts[0] || '');
+    if (['دكتوره','الدكتوره','طالبه','الطالبه','ست','الست','انسه','الانسه','سيده','السيده'].indexOf(p0) !== -1) {
+      explicitGender = 'f';
+      if (rawParts.length > 1) idx = 1;
+    } else if (['دكتور','الدكتور','طالب','الطالب','استاذ','الاستاذ','سيد','السيد','شيخ','الشيخ','حجي','الحجي','ملا','الملا'].indexOf(p0) !== -1) {
+      explicitGender = 'm';
+      if (rawParts.length > 1) idx = 1;
+    } else if (p0 === 'د' || p0.toLowerCase() === 'dr' || p0.toLowerCase() === 'dr.') {
+      if (rawParts.length > 1) idx = 1;
+    }
+
+    const w1Raw = rawParts[idx] || rawParts[0];
+    const w2Raw = rawParts[idx + 1] || '';
+    const w1 = normArWord(w1Raw);
+    const w1H = normArHaa(w1Raw);
+    const w2 = normArWord(w2Raw);
+    const w2H = normArHaa(w2Raw);
+
+    // 2) Compound first names
+    if (w1 === 'ام' || w1 === 'بنت') {
+      return { gender: 'f', firstName: w2Raw ? (w1Raw + ' ' + w2Raw) : w1Raw };
+    }
+    if (w1 === 'عبد' || w1 === 'ابو' || w1 === 'ابا' || w1 === 'ابي' || w1 === 'ذو' || w1 === 'ذي') {
+      return { gender: 'm', firstName: w2Raw ? (w1Raw + ' ' + w2Raw) : w1Raw };
+    }
+    if (/^(عبدال|ابوال|ذوال)/.test(w1) || (w1.length > 4 && /الله$/.test(w1))) {
+      return { gender: 'm', firstName: w1Raw };
+    }
+    if (['الهدى','البنين','الزهراء','الحوراء','العذراء','البتول','النساء','كلثوم','العين','الزمان','التاج'].indexOf(w2) !== -1) {
+      return { gender: 'f', firstName: w1Raw + ' ' + w2Raw };
+    }
+    if (['الله','الدين','العابدين','الاسلام','الحق','الفقار'].indexOf(w2) !== -1) {
+      return { gender: 'm', firstName: w1Raw + ' ' + w2Raw };
+    }
+
+    if (explicitGender) {
+      return { gender: explicitGender, firstName: w1Raw };
+    }
+
+    // 3) English / Latin alphabet names
+    if (/^[a-zA-Z]+$/.test(w1Raw)) {
+      const low = w1Raw.toLowerCase();
+      if (MALE_EN_SET[low]) return { gender: 'm', firstName: w1Raw };
+      if (FEMALE_EN_SET[low]) return { gender: 'f', firstName: w1Raw };
+      if (/^(abdul|abd|abo|abu|moh|muh|ahm)/.test(low)) return { gender: 'm', firstName: w1Raw };
+      if (/(a|ah|ia|ya|een|ine|elle)$/.test(low)) return { gender: 'f', firstName: w1Raw };
+      return { gender: 'm', firstName: w1Raw };
+    }
+
+    // 4) Check explicit Iraqi dictionaries (FEMALE_SET and MALE_SET)
+    // Note: if a name is unambiguously in MALE_SET and not FEMALE_SET -> 'm'
+    // If in FEMALE_SET and not MALE_SET -> 'f'
+    if (MALE_SET[w1H] && !FEMALE_SET[w1H]) {
+      return { gender: 'm', firstName: w1Raw };
+    }
+    if (FEMALE_SET[w1H] && !MALE_SET[w1H]) {
+      return { gender: 'f', firstName: w1Raw };
+    }
+    if (FEMALE_SET[w1H]) {
+      return { gender: 'f', firstName: w1Raw };
+    }
+
+    // 5) Arabic morphological rules for any unlisted name
+    // Unmistakable feminine endings (since all male exceptions like طه, حمزة, مصطفى, علاء, عبدالله, حسين, etc. are in MALE_SET):
+    if (
+      /ة$/.test(w1Raw) ||
+      /اء$/.test(w1) ||
+      /ى$/.test(w1) ||
+      /ا$/.test(w1) ||
+      /ه$/.test(w1Raw) ||
+      /ين$/.test(w1) ||
+      /ات$/.test(w1) ||
+      /^ا[فبتنستعشخغحجدرزسصضطظكلمنهوي]ت?[عفاىي]/.test(w1) // افتعال / إفعال verbal nouns
+    ) {
+      return { gender: 'f', firstName: w1Raw };
+    }
+
+    return { gender: 'm', firstName: w1Raw };
+  }
+
+  function detectGender(fullName) {
+    if (state.genderOverride) return state.genderOverride;
+    return parseStudentIdentity(fullName).gender;
+  }
+
+  // Helper: returns masculine or feminine Iraqi string automatically
+  const G = (mText, fText) => (state.gender === 'f' ? fText : mText);
+
+  // Non-repeating pool picker so every question gets a fresh reaction
+  function pickUnique(key, arr) {
+    if (!state.usedPools[key] || state.usedPools[key].length === 0) {
+      state.usedPools[key] = shuffle(arr);
+    }
+    return state.usedPools[key].pop();
+  }
+
+  /* =====================================================================
+     SCREEN MANAGEMENT
+     ===================================================================== */
+  const screens = { splash: $('splash'), register: $('register'), exam: $('exam'), results: $('results') };
+
+  function goto(phase) {
+    Object.keys(screens).forEach((k) => screens[k].classList.toggle('active', k === phase));
+    state.phase = phase;
+    $('assistant').classList.toggle('on', phase !== 'splash');
+    $('asPanel').classList.remove('open');
+    $('asTools').style.display = phase === 'exam' ? '' : 'none';
+    if (screens[phase]) screens[phase].scrollTop = 0;
+  }
+
+  /* =====================================================================
+     TOAST
+     ===================================================================== */
+  let toastTimer = null;
+  function toast(msg, type) {
+    const t = $('toast');
+    $('toastText').textContent = msg;
+    $('toastIcon').textContent = type === 'info' ? 'ℹ️' : '⚠️';
+    t.classList.toggle('info', type === 'info');
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* =====================================================================
+     ASSISTANT (مساعد الأسهل) – Live Iraqi Observer Brain
+     ===================================================================== */
+  const pick = (arr) => arr[randInt(arr.length)];
+  const firstName = () => (parseStudentIdentity(state.name).firstName || G('بطل', 'بطلة'));
+  const answeredCount = () => state.answers.filter((a) => a !== null).length;
+
+  function getPersonaStatus() {
+    if (state.persona === 'lazy') {
+      return G('كشفتك مالك خلك 😴 (طور الواسطات)', 'كشفتج مالج خلك 😴 (طور الواسطات)');
+    }
+    return G('شغّال وياك بطور الشاطر 🔥', 'شغّال وياج بطور الشاطرة 🔥');
+  }
+
+  const assistant = (function () {
+    const panel = $('asPanel'), textEl = $('asText'), actionsEl = $('asActions'), moodEl = $('asMood');
+    const badge = $('asBadge'), pillText = $('asPillText'), muteBtn = $('asMute');
+    let hideT = null, typeT = null, lastAt = 0;
+
+    function open() {
+      clearTimeout(hideT);
+      panel.classList.add('open');
+      badge.classList.remove('on');
+    }
+    function close() {
+      clearTimeout(hideT); clearTimeout(typeT);
+      panel.classList.remove('open');
+    }
+    function toggle() {
+      if (panel.classList.contains('open')) close(); else { open(); onAvatarClick(); }
+    }
+
+    function say(text, opts) {
+      opts = opts || {};
+      const isAuto = !opts.manual;
+      if (isAuto && opts.cooldown && Date.now() - lastAt < opts.cooldown) return false;
+      lastAt = Date.now();
+      clearTimeout(hideT); clearTimeout(typeT);
+
+      moodEl.textContent = opts.mood || (state.persona === 'lazy' ? '😴' : '🔥');
+      $('asPersonaDesc').textContent = getPersonaStatus();
+      pillText.textContent = text.length > 38 ? text.slice(0, 36) + '…' : text;
+
+      if (isAuto && !state.autoPopup && !opts.forceOpen) {
+        textEl.textContent = text;
+        actionsEl.textContent = '';
+        badge.classList.add('on');
+        return true;
+      }
+
+      open();
+      textEl.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+      actionsEl.textContent = '';
+      typeT = setTimeout(() => {
+        textEl.textContent = text;
+        const actions = opts.actions || [];
+        actions.forEach((a) => {
+          const b = el('button', 'as-btn', a.label);
+          b.type = 'button';
+          b.addEventListener('click', () => { if (a.onClick) a.onClick(); else close(); });
+          actionsEl.appendChild(b);
+        });
+        if (!actions.length && !opts.sticky) {
+          hideT = setTimeout(close, opts.duration || Math.min(6800, Math.max(3600, text.length * 52)));
+        }
+      }, 240);
+      return true;
+    }
+
+    $('asCollapse').addEventListener('click', close);
+    $('asAvatar').addEventListener('click', toggle);
+    $('asPill').addEventListener('click', toggle);
+    muteBtn.addEventListener('click', () => {
+      state.autoPopup = !state.autoPopup;
+      muteBtn.textContent = state.autoPopup ? '🔔 تلقائي' : '🔕 مطوي دائماً';
+      muteBtn.classList.toggle('muted', !state.autoPopup);
+      if (!state.autoPopup) {
+        pillText.textContent = 'المساعد مطوي (اضغط للفتح)';
+        close();
+      } else {
+        say(G('رجّعت السوالف التلقائية 🔔 وتگدر تطويني بأي وقت!', 'رجّعت السوالف التلقائية 🔔 وتگدرين تطويني بأي وقت!'), { manual: true });
+      }
+    });
+
+    return { say: say, hide: close, open: open };
+  })();
+
+  // Autonomous question reordering (preserves already answered questions up to current index, reorders upcoming ones)
+  function autoReorderUpcoming(mode) {
+    const idx = state.index;
+    if (idx >= state.questions.length - 2) return;
+    const headQ = state.questions.slice(0, idx + 1);
+    const headA = state.answers.slice(0, idx + 1);
+    const tailPairs = [];
+    for (let i = idx + 1; i < state.questions.length; i++) {
+      tailPairs.push({ q: state.questions[i], ans: state.answers[i] });
+    }
+    tailPairs.sort((a, b) => {
+      if (mode === 'easyFirst') {
+        const ua = a.ans === null ? 0 : 1, ub = b.ans === null ? 0 : 1;
+        if (ua !== ub) return ua - ub;
+        return (a.q.diff - b.q.diff) || (a.q.question.length - b.q.question.length);
+      }
+      if (mode === 'challenge') {
+        const ua = a.ans === null ? 0 : 1, ub = b.ans === null ? 0 : 1;
+        if (ua !== ub) return ua - ub;
+        return (b.q.diff - a.q.diff);
+      }
+      return 0;
+    });
+    state.questions = headQ.concat(tailPairs.map((p) => p.q));
+    state.answers = headA.concat(tailPairs.map((p) => p.ans));
+    buildDots();
+    updateMeta();
+  }
+
+  // Generate a unique, human-like Iraqi observer comment for every single question & answer
+  function reactToAnswer(q, isCorrect, elapsedMs, prevAns) {
+    const fn = firstName();
+    const doc = G('دكتور ' + fn, 'دكتورة ' + fn);
+
+    if (isCorrect) {
+      state.streakRight++;
+      state.streakWrong = 0;
+    } else {
+      state.streakWrong++;
+      state.streakRight = 0;
+    }
+
+    // 1) If student changed their previous answer on this question (uses 1 of 2 allowed changes)
+    if (prevAns !== null) {
+      const remNote = state.changesRemaining === 1
+        ? G(' (انتبه: بقتلك فرصة وحدة بس لتغيير الجواب بالامتحان كله! ⚠️)', ' (انتبهي: بقتلج فرصة وحدة بس لتغيير الجواب بالامتحان كله! ⚠️)')
+        : G(' (وهيج خلصت فرصتين التغيير مالتك — بعد أي خيار تدوسه ينقفل رسمي 🔒)', ' (وهيج خلصت فرصتين التغيير مالتج — بعد أي خيار تدوسيه ينقفل رسمي 🔒)');
+      const msg = isCorrect
+        ? pickUnique('chgRight', [
+            G('والله زين سويت من غيّرت رأيك! 😮‍💨 الجواب الأول چان فخ، هسه جبتها بالمضبوط يا ' + fn + ' 👌',
+              'والله زين سويتي من غيّرتي رأيج! 😮‍💨 الجواب الأول چان فخ، هسه جبتيها بالمضبوط يا ' + fn + ' 👌'),
+            G('عينك ميزانك! 🎯 زين انتبهت وعدّلتها باللحظة الأخيرة يا بطل.',
+              'عينج ميزانج! 🎯 زين انتبهتي وعدّلتيها باللحظة الأخيرة يا بطلة.')
+          ])
+        : pickUnique('chgWrong', [
+            G('أخ لو باقي على جوابك الأول أرحم 😅 يلا مو مشكلة، كمّل ولا يهمك!',
+              'أخ لو باقية على جوابج الأول أرحم 😅 يلا مو مشكلة، كمّلي ولا يهمج!'),
+            G('ليش بدّلتها يا ' + fn + '؟ 🤔 چان إحساسك الأول أقرب، يلا معوّضة بالسؤال الجاي.',
+              'ليش بدّلتيها يا ' + fn + '؟ 🤔 چان إحساسج الأول أقرب، يلا معوّضة بالسؤال الجاي.')
+          ]);
+      assistant.say(msg + remNote, { mood: isCorrect ? '😎' : '😅', duration: 4500 });
+      return;
+    }
+
+    // 2) Auto-switch to Lazy/Helper mode if struggling (2+ wrong in a row, or rushing blindly, or skipping)
+    if (state.persona !== 'lazy' && (state.streakWrong >= 2 || state.skipCount >= 2 || elapsedMs > 38000 || (elapsedMs < 1800 && !isCorrect))) {
+      state.persona = 'lazy';
+      if (!state.autoSortedEasy) {
+        state.autoSortedEasy = true;
+        autoReorderUpcoming('easyFirst');
+        assistant.say(
+          G('ها ' + fn + '، دا أراقبك وأشوفك مالك خلك أو الأسئلة ضوجتك 😴؟ لا تشيل هم! رتّبتلك الأسئلة الجاية من الأسهل والأقصر، وحضّرتلك واسطات حذف الخيارات بقائمتي 😉✂️',
+            'ها ' + fn + '، دا أراقبج وأشوفج مالج خلك أو الأسئلة ضوجتج 😴؟ لا تشيلين هم! رتّبتلج الأسئلة الجاية من الأسهل والأقصر، وحضّرتلج واسطات حذف الخيارات بقائمتي 😉✂️'),
+          {
+            mood: '😴',
+            actions: [
+              { label: 'عاشت إيدك والله 😂', onClick: () => assistant.hide() },
+              { label: 'احذفلي خيارين بالسؤال الجاي ✂️', onClick: () => { assistant.hide(); next(); setTimeout(() => $('toolElim').click(), 350); } }
+            ]
+          }
+        );
+        return;
+      }
+    }
+
+    // 3) Auto-switch back to Smart mode if 3+ correct in a row
+    if (state.persona !== 'smart' && state.streakRight >= 3) {
+      state.persona = 'smart';
+      autoReorderUpcoming('challenge');
+      assistant.say(
+        G('لا والله صحصحت وطلعت شاطر يا ' + doc + '! 🔥 رجّعتلك طور الشاطر ورتّبتلك الأسئلة الجاية بمستوى يليق بيك 💪',
+          'لا والله صحصحتي وطلعتي شاطرة يا ' + doc + '! 🔥 رجّعتلج طور الشاطرة ورتّبتلج الأسئلة الجاية بمستوى يليق بيج 💪'),
+        { mood: '🔥', duration: 4200 }
+      );
+      return;
+    }
+
+    // 4) Every single question gets a distinct contextual Iraqi reaction
+    if (isCorrect) {
+      if (elapsedMs < 3000) {
+        const fastRight = [
+          G('بلحظتها لقطتها يا ' + fn + '! ⚡ شنو هالسرعة الخرافية ما شاء الله!',
+            'بلحظتها لقطتيها يا ' + fn + '! ⚡ شنو هالسرعة الخرافية ما شاء الله!'),
+          G('طاخ بمنتصف الجبهة! 🎯 ما أخذت وياك ثواني يا وحش.',
+            'طاخ بمنتصف الجبهة! 🎯 ما أخذت وياج ثواني يا بطلة.'),
+          G('حتى ما لحگت أقرأ السؤال وياك وجاوبتها صح! 🔥 عاش والله.',
+            'حتى ما لحگت أقرأ السؤال وياج وجاوبتيها صح! 🔥 عاشت إيدج والله.'),
+          G('صاروخ ما شاء الله 🚀 مبين هذا الموضوع لعبتك الصغيرة!',
+            'صاروخ ما شاء الله 🚀 مبين هذا الموضوع لعبتج الصغيرة!')
+        ];
+        assistant.say(pickUnique('fastRight', fastRight), { mood: '⚡', duration: 3300 });
+        return;
+      }
+      if (state.streakRight >= 4) {
+        const streakMsgs = [
+          G('هاي ' + state.streakRight + ' صح على التوالي يا ' + doc + '! 🏆 اليوم ناوي تفلّش الامتحان تفليش!',
+            'هاي ' + state.streakRight + ' صح على التوالي يا ' + doc + '! 🏆 اليوم ناوية تفلّشين الامتحان تفليش!'),
+          G('ما شاء الله سلسلة انتصارات متواصلة (' + state.streakRight + ' ورا بعض)! 🔥 محد يوكف بوجهك اليوم.',
+            'ما شاء الله سلسلة انتصارات متواصلة (' + state.streakRight + ' ورا بعض)! 🔥 محد يوكف بوجهج اليوم.'),
+          G('عيني عليك باردة يا ' + fn + ' 🧿 ' + state.streakRight + ' إجابات صحيحة بدون ولا غلطة!',
+            'عيني عليج باردة يا ' + fn + ' 🧿 ' + state.streakRight + ' إجابات صحيحة بدون ولا غلطة!')
+        ];
+        assistant.say(pickUnique('streakRight', streakMsgs), { mood: '🏆', duration: 3500 });
+        return;
+      }
+      const normalRight = [
+        G('عاشت إيدك يا ' + doc + '! 👏 اختيار بمكانه، يلا على اللي بعده.',
+          'عاشت إيدج يا ' + doc + '! 👏 اختيار بمكانه، يلا على اللي بعده.'),
+        G('مضبوط 100%! 🧠 واضح فاهم الفكرة مو بس دارخها.',
+          'مضبوط 100%! 🧠 واضح فاهمة الفكرة مو بس دارختها.'),
+        G('حلووو! 😍 هيج أريدك مسيطر بـ «' + (TOPICS[q.topic] || 'الكيمياء') + '».',
+          'حلووو! 😍 هيج أريدج مسيطرة بـ «' + (TOPICS[q.topic] || 'الكيمياء') + '».'),
+        G('كفو والله! 👌 هذا السؤال هواي طلاب يغلطون بيه بس أنت عبرته بذكاء.',
+          'كفو والله! 👌 هذا السؤال هواي طلاب يغلطون بيه بس أنتي عبرتيه بذكاء.'),
+        G('ذهب صافي يا ' + fn + '! ✨ نقطة جديدة بالجيب، استمر.',
+          'ذهب صافي يا ' + fn + '! ✨ نقطة جديدة بالجيب، استمري.'),
+        G('بالضبط! 🎯 قريت السؤال بهدوء وجبت الصافي.',
+          'بالضبط! 🎯 قريتي السؤال بهدوء وجبتي الصافي.'),
+        G('عفيه عليك! 💪 خطوة ورا خطوة للدرجة الكاملة إن شاء الله.',
+          'عفيه عليج! 💪 خطوة ورا خطوة للدرجة الكاملة إن شاء الله.'),
+        G('شغل نظيف ومرتب يا ' + doc + ' 🩺 يلا السؤال الجاي ينتظرك!',
+          'شغل نظيف ومرتب يا ' + doc + ' 🩺 يلا السؤال الجاي ينتظرج!')
+      ];
+      assistant.say(pickUnique('normalRight', normalRight), { mood: '😎', duration: 3300 });
+    } else {
+      // Incorrect answer – give a subtle, friendly observer nudge without spoiling the exact answer
+      const shortHint = (q.exp || '').split(/[،.]/)[0] || '';
+      const chgTail = state.changesRemaining > 0
+        ? G(' (عندك بعد ' + (state.changesRemaining === 2 ? 'فرصتين' : 'فرصة وحدة بس') + ' لتغيير الجواب إذا تحب تعدّلها)',
+            ' (عندج بعد ' + (state.changesRemaining === 2 ? 'فرصتين' : 'فرصة وحدة بس') + ' لتغيير الجواب إذا تحبين تعدّليها)')
+        : G(' (قُفل الجواب لأن خلصت فرصتين التغيير 🔒 ركّز بالسؤال الجاي قبل لا تدوس!)',
+            ' (قُفل الجواب لأن خلصت فرصتين التغيير 🔒 ركّزي بالسؤال الجاي قبل لا تدوسين!)');
+      if (elapsedMs < 2200) {
+        const rushedWrong = [
+          G('استعجلت بيها يا ' + fn + '! 🤨 دتشلفط لو شنو؟ ترة السؤال بيه لفة: ' + shortHint + '.',
+            'استعجلتي بيها يا ' + fn + '! 🤨 دتشلفطين لو شنو؟ ترة السؤال بيه لفة: ' + shortHint + '.'),
+          G('على كيفك يا معود، ركضت على الخيار الغلط! 😅 تلميح صغير: ' + shortHint + '.',
+            'على كيفج يا معودة، ركضتي على الخيار الغلط! 😅 تلميح صغير: ' + shortHint + '.')
+        ];
+        assistant.say(pickUnique('rushedWrong', rushedWrong) + chgTail, { mood: '🤨', duration: 4500 });
+        return;
+      }
+      const gentleWrong = [
+        G('ممم متأكد من هذا الخيار يا ' + fn + '؟ 🤔 أني كاعد أراقبك وأكول تراجع فكرة: ' + shortHint + '.',
+          'ممم متأكدة من هذا الخيار يا ' + fn + '؟ 🤔 أني كاعد أراقبج وأكول تراجعين فكرة: ' + shortHint + '.'),
+        G('أحس هذا الخيار بيه إنّ 👀! الفكرة هنا: ' + shortHint + '.',
+          'أحس هذا الخيار بيه إنّ 👀! الفكرة هنا: ' + shortHint + '.'),
+        G('غلطة الشاطر بألف يا ' + doc + ' 😅! خلي ببالك: ' + shortHint + '.',
+          'غلطة الشاطرة بألف يا ' + doc + ' 😅! خلي ببالج: ' + shortHint + '.'),
+        G('لا توكع بهذا الفخ يا ' + fn + '! 🕵️‍♂️ ركّز على: ' + shortHint + '.',
+          'لا توكعين بهذا الفخ يا ' + fn + '! 🕵️‍♂️ ركّزي على: ' + shortHint + '.'),
+        G('هذا السؤال شوية خبيث 😈! تلميح من يمي: ' + shortHint + '.',
+          'هذا السؤال شوية خبيث 😈! تلميح من يمي: ' + shortHint + '.')
+      ];
+      assistant.say(pickUnique('gentleWrong', gentleWrong) + chgTail, { mood: '🧐', duration: 4500 });
+    }
+  }
+
+  /* ---------- Interactive Assistant Tools (Hint, 50/50, Simplify, Chat) ---------- */
+  $('toolHint').addEventListener('click', () => {
+    if (state.phase !== 'exam') return;
+    const q = state.questions[state.index];
+    const exp = q.exp || '';
+    const firstSentence = exp.split(/[،.]/)[0] || 'ركّز على اسم الإنزيم أو موقع التفاعل في الخلية';
+    const prefix = G('بيني وبينك يا ' + firstName() + ' 🤫 تلميح سريع: ', 'بيني وبينج يا ' + firstName() + ' 🤫 تلميح سريع: ');
+    assistant.say(prefix + firstSentence + '.', { manual: true, sticky: true, mood: '💡' });
+  });
+
+  $('toolElim').addEventListener('click', () => {
+    if (state.phase !== 'exam') return;
+    const q = state.questions[state.index];
+    if (state.eliminated[q.id]) {
+      assistant.say(G('حذفتلك خيارين بهذا السؤال من قبل 😉 اختار من الثنين الباقيات!', 'حذفتلج خيارين بهذا السؤال من قبل 😉 اختاري من الثنين الباقيات!'), { manual: true, sticky: true });
+      return;
+    }
+    if (state.elimRemaining <= 0) {
+      assistant.say(G('خلصت الواسطات يا معود 😅 استهلكت كل محاولات الحذف!', 'خلصت الواسطات يا معودة 😅 استهلكتي كل محاولات الحذف!'), { manual: true, sticky: true });
+      return;
+    }
+    const wrongIndices = [];
+    q.options.forEach((o, idx) => { if (!o.correct && state.answers[state.index] !== idx) wrongIndices.push(idx); });
+    const toRemove = shuffle(wrongIndices).slice(0, 2);
+    state.eliminated[q.id] = toRemove;
+    state.elimRemaining--;
+    $('elimLeft').textContent = state.elimRemaining;
+    if (state.elimRemaining <= 0) $('toolElim').disabled = true;
+    applyEliminations(q.id);
+    assistant.say(
+      G('طيرتلك خيارين غلط لعيونك ✂️😎 بقت بس ثنين، اختار وحدة وفضّها!',
+        'طيرتلج خيارين غلط لعيونج ✂️😎 بقت بس ثنين، اختاري وحدة وفضّيها!'),
+      { manual: true, sticky: true, mood: '✂️' }
+    );
+  });
+
+  $('toolSimp').addEventListener('click', () => {
+    if (state.phase !== 'exam') return;
+    const q = state.questions[state.index];
+    const topicName = TOPICS[q.topic] || 'الكيمياء الحياتية';
+    const m = q.question.match(/\b(EXCEPT|FALSE|NOT)\b/);
+    const warn = m ? (' (وانتبه: يريد الخيار الغلط لأن بالسؤال كلمة ' + m[1] + ')') : '';
+    const shortHint = (q.exp || '').split(/[،.]/)[0] || '';
+    assistant.say(
+      G('تفسير السؤال بالعراقي المختصر 🇸🇦: هذا السؤال من موضوع «' + topicName + '»' + warn + '. الفكرة وما بيها: ' + shortHint + '.',
+        'تفسير السؤال بالعراقي المختصر 🇸🇦: هذا السؤال من موضوع «' + topicName + '»' + warn + '. الفكرة وما بيها: ' + shortHint + '.'),
+      { manual: true, sticky: true, mood: '🇸🇦' }
+    );
+  });
+
+  $('toolCheer').addEventListener('click', () => {
+    const fn = firstName();
+    const a = answeredCount(), r = state.questions.length - a;
+    const chats = [
+      G('والله يا ' + fn + ' دأشوفك كاعد تحل بتركيز، حليت ' + a + ' وبقى بس ' + r + ' — شد حيلك يا دكتور! 🔥',
+        'والله يا ' + fn + ' دأشوفج كاعدة تحلين بتركيز، حليتي ' + a + ' وبقى بس ' + r + ' — شدي حيلج يا دكتورة! 🔥'),
+      G('تدري شكد حلو من تحل وتفهم كل نقطة؟ أني وياك سؤال بسؤال، إذا وكفت بشي اضغط "تلميح ذكي" 😉',
+        'تدرين شكد حلو من تحلين وتفهمين كل نقطة؟ أني وياج سؤال بسؤال، إذا وكفتي بشي اضغطي "تلميح ذكي" 😉'),
+      G('ها، شلونها المعنويات؟ ☕ ترى الأسئلة الجاية رتّبتها إلك حتى تمشي بيها مثل المي!',
+        'ها، شلونها المعنويات؟ ☕ ترى الأسئلة الجاية رتّبتها إلج حتى تمشين بيها مثل المي!')
+    ];
+    assistant.say(pickUnique('manualChat', chats), { manual: true, sticky: true, mood: '💬' });
+  });
+
+  function applyEliminations(qid) {
+    const elim = state.eliminated[qid] || [];
+    const btns = $('qOptions').children;
+    for (let k = 0; k < btns.length; k++) {
+      btns[k].classList.toggle('eliminated', elim.indexOf(k) !== -1);
+    }
+  }
+
+  function onAvatarClick() {
+    if (state.phase === 'exam') {
+      $('toolCheer').click();
+    } else if (state.phase === 'results') {
+      assistant.say(G('تگدر تفلتر أخطاءك وتقرأ شرحي المفصّل تحت كل سؤال 📖', 'تگدرين تفلترين أخطاءج وتقرين شرحي المفصّل تحت كل سؤال 📖'), {
+        manual: true, sticky: true, actions: [{ label: 'وريني أخطائي', onClick: showWrong }]
+      });
+    } else {
+      assistant.say('هلا بيك 👋 اكتب اسمك الثلاثي واضغط ابدأ، وأني راح أعرفك وأراقب لعبك سؤال بسؤال!', { manual: true, sticky: true });
+    }
+  }
+
+  function onQuestionShown(q) {
+    $('qTopic').textContent = (TOPICS[q.topic] || '') + (q.diff === 1 ? ' · سهل 🌱' : q.diff === 3 ? ' · متقدم 🔥' : ' · متوسط ⚡');
+    applyEliminations(q.id);
+    state.qShownAt = Date.now();
+    clearTimeout(state.idleT);
+
+    const fn = firstName();
+    const m = q.question.match(/\b(EXCEPT|FALSE|NOT)\b/);
+    if (m && state.answers[state.index] === null) {
+      assistant.say(
+        G('دير بالك يا ' + fn + '! ⚠️ هذا السؤال بيه كلمة ' + m[1] + ' يعني يريد الجواب الغلط مو الصح، لا توكع بالفخ!',
+          'ديري بالج يا ' + fn + '! ⚠️ هذا السؤال بيه كلمة ' + m[1] + ' يعني يريد الجواب الغلط مو الصح، لا توكعين بالفخ!'),
+        { mood: '⚠️', duration: 4000 }
+      );
+    } else if (state.answers[state.index] === null && state.index > 0) {
+      // Proactive Iraqi observer commentary when a new question appears
+      const introPool = [
+        G('سؤال جديد من «' + TOPICS[q.topic] + '» 👀 خلي نشوف شلون راح تتعامل وياه يا ' + fn + '!',
+          'سؤال جديد من «' + TOPICS[q.topic] + '» 👀 خلي نشوف شلون راح تتعاملين وياه يا ' + fn + '!'),
+        q.diff === 1
+          ? G('هذا السؤال سهل وحلو 🌱 المفروض تحله وأنت مغمّض يا بطل!', 'هذا السؤال سهل وحلو 🌱 المفروض تحليه وأنتي مغمّضة يا بطلة!')
+          : q.diff === 3
+          ? G('هذا السؤال من العيار الثقيل 🔥 ركّز بكل كلمة بيه يا دكتور!', 'هذا السؤال من العيار الثقيل 🔥 ركّزي بكل كلمة بيه يا دكتورة!')
+          : G('سؤال مرتب على «' + TOPICS[q.topic] + '» ⚡ اقرأ الخيارات الأربعة قبل لا تدوس.', 'سؤال مرتب على «' + TOPICS[q.topic] + '» ⚡ اقري الخيارات الأربعة قبل لا تدوسين.'),
+        G('ها شلونه هذا السؤال؟ 🤔 إذا حسّيته غريب اضغط "بسّط السؤال" بقائمتي.',
+          'ها شلونه هذا السؤال؟ 🤔 إذا حسّيتيه غريب اضغطي "بسّط السؤال" بقائمتي.'),
+        G('يلا يا ' + fn + '، عينك على الكلمات المفتاحية بالسؤال 🎯',
+          'يلا يا ' + fn + '، عينج على الكلمات المفتاحية بالسؤال 🎯')
+      ];
+      // Update pill text silently on every question, and pop open occasionally so it feels alive without being spammy
+      $('asPillText').textContent = pickUnique('qIntro', introPool);
+    }
+
+    const idx = state.index;
+    state.idleT = setTimeout(() => {
+      if (state.phase === 'exam' && state.index === idx && state.answers[idx] === null && !document.body.classList.contains('shielded')) {
+        state.persona = 'lazy';
+        if (!state.autoSortedEasy) {
+          state.autoSortedEasy = true;
+          autoReorderUpcoming('easyFirst');
+        }
+        assistant.say(
+          G('شو صفنت هواي على هذا السؤال يا ' + fn + ' 😴؟ يلا سهّلتلك الأسئلة الجاية، وهسه اضغط هنا أحذفلك خيارين غلط أو أنطيك تلميح!',
+            'شو صفنتي هواي على هذا السؤال يا ' + fn + ' 😴؟ يلا سهّلتلج الأسئلة الجاية، وهسه اضغطي هنا أحذفلج خيارين غلط أو أنطيج تلميح!'),
+          {
+            mood: '😴',
+            actions: [
+              { label: 'احذف خيارين ✂️', onClick: () => $('toolElim').click() },
+              { label: 'انطيني تلميح 💡', onClick: () => $('toolHint').click() },
+              { label: 'اطوِ القائمة ▾', onClick: () => assistant.hide() }
+            ]
+          }
+        );
+      }
+    }, 28000);
+  }
+
+  function onAnswered(prevAns) {
+    const q = state.questions[state.index];
+    const chosen = q.options[state.answers[state.index]];
+    const elapsed = Date.now() - state.qShownAt;
+    const n = state.questions.length, a = answeredCount();
+    const fn = firstName();
+
+    if (a === n && !state.ms.all) {
+      state.ms.all = true;
+      assistant.say(
+        G('وأخيراً خلصت كل الأسئلة يا ' + fn + '! 🥳 نسلّم ونشوف النتيجة لو تراجع عالسريع؟',
+          'وأخيراً خلصتي كل الأسئلة يا ' + fn + '! 🥳 نسلّم ونشوف النتيجة لو تراجعين عالسريع؟'),
+        {
+          mood: '🎉',
+          actions: [
+            { label: 'أراجع أول 🔍', onClick: () => { renderQuestion(0, 'prev'); assistant.hide(); } },
+            { label: 'سلّم الآن ✅', onClick: () => { assistant.hide(); openSubmitModal(); } }
+          ]
+        }
+      );
+      return;
+    }
+
+    if (chosen) reactToAnswer(q, chosen.correct, elapsed, prevAns);
+  }
+
+  function coachSkip(i) {
+    state.skipCount++;
+    const fn = firstName();
+    if (state.skipCount >= 2 && state.persona !== 'lazy') {
+      state.persona = 'lazy';
+      autoReorderUpcoming('easyFirst');
+      assistant.say(
+        G('أشوفك كمت تطوّف أسئلة يا ' + fn + ' 😴؟ حقك والله! حوّلتلك الأسئلة الجاية للأسهل والأقصر، واللي طوّفتهن أجمعلكياهن بالأخير 😉',
+          'أشوفج كمتي تطوّفين أسئلة يا ' + fn + ' 😴؟ حقج والله! حوّلتلج الأسئلة الجاية للأسهل والأقصر، واللي طوّفتيهن أجمعلجياهن بالأخير 😉'),
+        { mood: '😴', duration: 4200 }
+      );
+      return;
+    }
+    const skipPool = [
+      G('طوّفت السؤال ' + (i + 1) + ' يا ' + fn + '؟ 🤣 يلا عوفه هسه، أني أرجعلكياه بالأخير.',
+        'طوّفتي السؤال ' + (i + 1) + ' يا ' + fn + '؟ 🤣 يلا عوفيه هسه، أني أرجعلجياه بالأخير.'),
+      G('ما عجبك السؤال ' + (i + 1) + '؟ 👀 ولا يهمك، سجّلته يمي حتى نرجعله قبل التسليم.',
+        'ما عجبج السؤال ' + (i + 1) + '؟ 👀 ولا يهمج، سجّلته يمي حتى نرجعله قبل التسليم.')
+    ];
+    assistant.say(pickUnique('skipPool', skipPool), { mood: '👀', duration: 3400 });
+  }
+
+  function topicStats() {
+    const map = {};
+    state.questions.forEach((q, i) => {
+      const t = q.topic;
+      if (!map[t]) map[t] = { key: t, name: TOPICS[t], c: 0, n: 0 };
+      map[t].n++;
+      const a = state.answers[i];
+      if (a !== null && q.options[a].correct) map[t].c++;
+    });
+    return Object.keys(map).map((k) => {
+      const s = map[k]; s.p = Math.round((s.c / s.n) * 100); return s;
+    }).sort((x, y) => (y.p - x.p) || (y.n - x.n));
+  }
+
+  function renderCoach(correct, wrong, skip, pct, secs) {
+    const fn = firstName();
+    const doc = G('دكتور ' + fn, 'دكتورة ' + fn);
+    const stats = topicStats();
+    const items = [];
+    if (pct >= 90) items.push(['🏆', G(doc + '، أداءك خرافي! والله واضح فاهم المادة مو بس حافظها.', doc + '، أداءج خرافي! والله واضح فاهمة المادة مو بس حافظتها.')]);
+    else if (pct >= 75) items.push(['🌟', G(doc + '، مستواك كلش قوي! كم شغلة بسيطة وتجيب الدرجة الكاملة.', doc + '، مستواج كلش قوي! كم شغلة بسيطة وتجيبين الدرجة الكاملة.')]);
+    else if (pct >= 60) items.push(['💪', G(fn + '، عاشت إيدك أداء زين، بس لو تراجع أخطاءك راح تصعد درجتك بسرعة.', fn + '، عاشت إيدج أداء زين، بس لو تراجعين أخطاءج راح تصعد درجتج بسرعة.')]);
+    else if (pct >= 50) items.push(['📚', G(fn + '، عبرت الحمد لله 👏 بس راجع الشرح جوه كل سؤال حتى تثبّت الأساسيات.', fn + '، عبرتي الحمد لله 👏 بس راجعي الشرح جوه كل سؤال حتى تثبّتين الأساسيات.')]);
+    else items.push(['🔥', G(fn + '، ولا يهمك أبد — هذا الاختبار حتى تتعلم منه. اقرأ تعليقي جوه كل سؤال وارجع جرّب!', fn + '، ولا يهمج أبد — هذا الاختبار حتى تتعلمين منه. اقري تعليقي جوه كل سؤال وارجعي جرّبي!')]);
+
+    const best = stats[0], worst = stats[stats.length - 1];
+    if (best && worst && best.p !== worst.p) {
+      items.push(['✅', G('أقوى موضوع سيطرت عليه: «' + best.name + '» بنسبة ' + best.p + '%.', 'أقوى موضوع سيطرتي عليه: «' + best.name + '» بنسبة ' + best.p + '%.')]);
+      items.push(['🎯', G('الموضوع اللي يحتاج تركز عليه: «' + worst.name + '» (' + worst.c + ' من ' + worst.n + ' صح).', 'الموضوع اللي يحتاج تركزين عليه: «' + worst.name + '» (' + worst.c + ' من ' + worst.n + ' صح).')]);
+    } else if (best) {
+      items.push(['⚖️', G('مستواك متوازن بكل المواضيع بنسبة ' + best.p + '%.', 'مستواج متوازن بكل المواضيع بنسبة ' + best.p + '%.')]);
+    }
+
+    const avg = Math.round(secs / Math.max(1, state.questions.length));
+    if (avg < 12) items.push(['⚡', G('حليت بسرعة كبيرة (معدل ' + avg + ' ثانية للسؤال) — بالامتحان الحقيقي تأنّى شوية أكثر.', 'حليتي بسرعة كبيرة (معدل ' + avg + ' ثانية للسؤال) — بالامتحان الحقيقي تأنّي شوية أكثر.')]);
+    else if (avg > 90) items.push(['⏳', G('أخذت وقت طويل (معدل ' + avg + ' ثانية للسؤال) — تدرّب على السرعة حتى ما يضيق بيك الوقت.', 'أخذتي وقت طويل (معدل ' + avg + ' ثانية للسؤال) — تدرّبي على السرعة حتى ما يضيق بيج الوقت.')]);
+    else items.push(['⏱️', G('توقيتك بالحل كلش مثالي (معدل ' + avg + ' ثانية للسؤال) 👌', 'توقيتج بالحل كلش مثالي (معدل ' + avg + ' ثانية للسؤال) 👌')]);
+
+    if (skip > 0) items.push(['⏭️', G('طوّفت ' + skip + ' سؤال بدون حل — بالامتحان الحقيقي لا تعوف أي سؤال فارغ.', 'طوّفتي ' + skip + ' سؤال بدون حل — بالامتحان الحقيقي لا تعوفين أي سؤال فارغ.')]);
+    if (state.violations > 0) items.push(['👀', G('طلعت من نافذة الاختبار ' + state.violations + ' مرة — دير بالك بالامتحان المراقب.', 'طلعتي من نافذة الاختبار ' + state.violations + ' مرة — ديري بالج بالامتحان المراقب.')]);
+    items.push(['💡', wrong > 0
+      ? G('اضغط فلتر «Wrong» جوه، واقرأ تعليقي وشرحي على كل سؤال غلطت بيه.', 'اضغطي فلتر «Wrong» جوه، واقري تعليقي وشرحي على كل سؤال غلطتي بيه.')
+      : G('ولا غلطة ما شاء الله! 👑 سبع والله يا ' + doc + '.', 'ولا غلطة ما شاء الله! 👑 سبعة والله يا ' + doc + '.')]);
+
+    const list = $('coachList');
+    list.textContent = '';
+    items.forEach((it, k) => {
+      const li = el('li', 'fade-up');
+      li.style.animationDelay = (0.25 + k * 0.1) + 's';
+      li.appendChild(el('span', '', it[0]));
+      li.appendChild(el('span', '', it[1]));
+      list.appendChild(li);
+    });
+
+    const bars = $('topicBars');
+    bars.textContent = '';
+    const fills = [];
+    stats.forEach((s) => {
+      const row = el('div', 'tbar');
+      const head = el('div', 'tbar-head');
+      head.appendChild(el('span', '', s.name));
+      head.appendChild(el('b', '', s.c + '/' + s.n + ' · ' + s.p + '%'));
+      const track = el('div', 'tbar-track');
+      const fill = el('div', 'tbar-fill');
+      fill.style.background = s.p >= 75 ? 'linear-gradient(90deg,#10b981,#34d399)' : s.p >= 50 ? 'linear-gradient(90deg,#06b6d4,#3b82f6)' : 'linear-gradient(90deg,#ef4444,#f97316)';
+      track.appendChild(fill);
+      row.appendChild(head); row.appendChild(track);
+      bars.appendChild(row);
+      fills.push([fill, s.p]);
+    });
+    setTimeout(() => fills.forEach((f) => { f[0].style.width = f[1] + '%'; }), 600);
+
+    setTimeout(() => {
+      const actions = wrong > 0
+        ? [{ label: 'وريني أخطائي', onClick: showWrong }, { label: 'مشكور 😊', onClick: () => assistant.say(G('تدلل يا ' + doc + '! 🌟', 'تدللين يا ' + doc + '! 🌟'), { mood: '🌟', duration: 2500 }) }]
+        : [{ label: 'مشكور 😊', onClick: () => assistant.say(G('فخور بيك يا ' + doc + '! 🌟', 'فخور بيج يا ' + doc + '! 🌟'), { mood: '🌟', duration: 2500 }) }];
+      if (pct >= 50) assistant.say(G('عاشت إيدك يا ' + doc + '! 🎉 جبت ' + pct + '%. كتبتلك تحليل كامل وتعليق عراقي جوه كل سؤال 👇', 'عاشت إيدج يا ' + doc + '! 🎉 جبتي ' + pct + '%. كتبتلج تحليل كامل وتعليق عراقي جوه كل سؤال 👇'), { mood: '🎉', actions: actions });
+      else assistant.say(G(fn + '، فدوة إلك 💙 ' + pct + '% مو نهاية العالم، تعال نشوف الأخطاء ونتعلم منها هسه.', fn + '، فدوة إلج 💙 ' + pct + '% مو نهاية العالم، تعالي نشوف الأخطاء ونتعلم منها هسه.'), { mood: '💙', actions: actions });
+    }, 2000);
+  }
+
+  function showWrong() {
+    assistant.hide();
+    setFilter('bad');
+    const target = $('reviewWrap');
+    screens.results.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+  }
+
+  function bdi(text) {
+    const b = document.createElement('bdi');
+    b.setAttribute('dir', 'ltr');
+    b.textContent = text;
+    return b;
+  }
+
+  function buildComment(q, a, status) {
+    const box = el('div', 'comment');
+    box.setAttribute('dir', 'rtl');
+    box.appendChild(el('div', 'c-ava', '🦷'));
+    const body = el('div', 'flex-1 min-w-0');
+    const v = el('div', 'c-verdict');
+    const right = q.options.find((o) => o.correct);
+    if (status === 'ok') {
+      v.style.color = '#6ee7b7';
+      v.textContent = pick([
+        G('عاشت إيدك يا بطل! ✅ جوابك مضبوط 100%.', 'عاشت إيدج يا بطلة! ✅ جوابج مضبوط 100%.'),
+        G('كفو والله! ✅ لقطتها صح.', 'كفو والله! ✅ لقطتيها صح.'),
+        G('عفيه عليك! ✅ إجابة صحيحة.', 'عفيه عليج! ✅ إجابة صحيحة.')
+      ]);
+    } else if (status === 'bad') {
+      v.style.color = '#fca5a5';
+      v.append(G('اختاريت «', 'اختاريتي «')); v.appendChild(bdi(q.options[a].text)); v.append('» ❌ والجواب الصحيح هو «'); v.appendChild(bdi(right.text)); v.append('».');
+    } else {
+      v.style.color = '#fcd34d';
+      v.append(G('طوّفت هذا السؤال ما حلّيته ⏭️ الجواب الصحيح هو «', 'طوّفتي هذا السؤال ما حلّيتيه ⏭️ الجواب الصحيح هو «')); v.appendChild(bdi(right.text)); v.append('».');
+    }
+    body.appendChild(v);
+    if (q.exp) body.appendChild(el('div', 'c-exp', q.exp));
+    box.appendChild(body);
+    return box;
+  }
+
+  /* ---------- Review filters ---------- */
+  function setFilter(f) {
+    document.querySelectorAll('.flt').forEach((b) => b.classList.toggle('active', b.dataset.f === f));
+    let visible = 0;
+    Array.prototype.forEach.call($('reviewList').children, (c) => {
+      const show = f === 'all' || c.dataset.status === f;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    $('reviewEmpty').classList.toggle('hidden', visible > 0);
+  }
+  function updateFilterCounts() {
+    const st = Array.prototype.map.call($('reviewList').children, (c) => c.dataset.status);
+    $('fAll').textContent = st.length;
+    $('fBad').textContent = st.filter((s) => s === 'bad').length;
+    $('fOk').textContent = st.filter((s) => s === 'ok').length;
+    $('fSkip').textContent = st.filter((s) => s === 'skip').length;
+  }
+  document.querySelectorAll('.flt').forEach((b) => b.addEventListener('click', () => setFilter(b.dataset.f)));
+
+  /* =====================================================================
+     WATERMARK
+     ===================================================================== */
+  function buildWatermark(name) {
+    const stamp = new Date().toLocaleString('en-GB', { hour12: false });
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="380" height="200">' +
+      '<g fill="#ffffff" font-family="Tahoma, Arial, sans-serif" text-anchor="middle">' +
+      '<text x="190" y="80" font-size="22" font-weight="700">' + escapeXml(name) + '</text>' +
+      '<text x="190" y="112" font-size="17" font-weight="700">الأسهل بطب الأسنان</text>' +
+      '<text x="190" y="136" font-size="11">' + escapeXml(stamp) + '</text>' +
+      '</g></svg>';
+    const wm = $('watermark');
+    wm.style.backgroundImage = 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg) + '")';
+    wm.classList.add('on');
+  }
+
+  /* =====================================================================
+     SPLASH → REGISTRATION
+     ===================================================================== */
+  setTimeout(() => {
+    goto('register');
+    setTimeout(() => assistant.say('هلا بيكم باختبار الأسهل! 👋 بس اكتب أو اكتبي الاسم الثلاثي واني راح أعرفك فوراً (دكتور لو دكتورة 😉) وأرتّب الأسئلة وأراقب الحل سؤال بسؤال!', { mood: '👋' }), 1100);
+    setTimeout(() => { try { $('nameInput').focus({ preventScroll: true }); } catch (e) { /* noop */ } }, 900);
+  }, 3500);
+
+  /* =====================================================================
+     REGISTRATION
+     ===================================================================== */
+  const nameInput = $('nameInput');
+  const nameError = $('nameError');
+  const genderPill = $('genderPill');
+  const regWelcome = $('regWelcome');
+  let regGreetTimer = null;
+  let lastGreetedKey = '';
+
+  function updateLiveGenderUI(shouldSpeak) {
+    const raw = nameInput.value.replace(/\s+/g, ' ').trim();
+    if (!raw || raw.length < 2) {
+      state.genderOverride = null;
+      genderPill.className = 'gender-pill hidden';
+      regWelcome.textContent = 'مرحباً بك في الاختبار';
+      return;
+    }
+    const parsed = parseStudentIdentity(raw);
+    const g = state.genderOverride || parsed.gender;
+    state.gender = g;
+    const fn = parsed.firstName;
+    if (g === 'f') {
+      genderPill.className = 'gender-pill female';
+      genderPill.textContent = '👩‍⚕️ دكتورة ' + fn + ' (تعرّف تلقائي · اضغطي للتبديل)';
+      regWelcome.textContent = 'هلا بيج يا دكتورة ' + fn + ' 👩‍⚕️';
+    } else {
+      genderPill.className = 'gender-pill male';
+      genderPill.textContent = '👨‍⚕️ دكتور ' + fn + ' (تعرّف تلقائي · اضغط للتبديل)';
+      regWelcome.textContent = 'هلا بيك يا دكتور ' + fn + ' 👨‍⚕️';
+    }
+    const greetKey = g + ':' + fn;
+    if (shouldSpeak && greetKey !== lastGreetedKey && fn.length >= 2) {
+      lastGreetedKey = greetKey;
+      assistant.say(
+        g === 'f'
+          ? ('يا هلا والله بدكتورة ' + fn + '! 👩‍⚕️ عرفتج من اسمج، كمّلي الاسم الثلاثي ودوسي «ابدأ الاختبار» حتى نبلّش!')
+          : ('يا هلا والله بدكتور ' + fn + '! 👨‍⚕️ عرفتك من اسمك، كمّل الاسم الثلاثي ودوس «ابدأ الاختبار» حتى نبلّش!'),
+        { mood: g === 'f' ? '👩‍⚕️' : '👨‍⚕️', duration: 4000 }
+      );
+    }
+  }
+
+  genderPill.addEventListener('click', () => {
+    state.genderOverride = state.gender === 'f' ? 'm' : 'f';
+    lastGreetedKey = '';
+    updateLiveGenderUI(true);
+  });
+
+  nameInput.addEventListener('input', () => {
+    nameInput.classList.remove('invalid');
+    nameError.textContent = '';
+    state.genderOverride = null;
+    updateLiveGenderUI(false);
+    clearTimeout(regGreetTimer);
+    regGreetTimer = setTimeout(() => updateLiveGenderUI(true), 450);
+  });
+
+  $('regForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const raw = nameInput.value.replace(/\s+/g, ' ').trim();
+    const parts = raw.split(' ').filter(Boolean);
+    state.gender = detectGender(raw);
+    let err = '';
+    if (!raw) err = G('يرجى إدخال اسمك للبدء', 'يرجى إدخال اسمج للبدء');
+    else if (parts.length < 3) err = G('يرجى إدخال اسمك الثلاثي كاملاً (ثلاثة أسماء على الأقل)', 'يرجى إدخال اسمج الثلاثي كاملاً (ثلاثة أسماء على الأقل)');
+    else if (parts.some((p) => p.length < 2)) err = 'يرجى التأكد من كتابة الاسم بشكل صحيح';
+    if (err) {
+      nameError.textContent = err;
+      nameInput.classList.remove('invalid');
+      void nameInput.offsetWidth;
+      nameInput.classList.add('invalid');
+      nameInput.focus();
+      assistant.say(G('اكتب اسمك الثلاثي كامل يا دكتور حتى يطلع بنتيجتك 😊', 'اكتبي اسمج الثلاثي كامل يا دكتورة حتى يطلع بنتيجتج 😊'), { mood: '✍️', cooldown: 2500 });
+      return;
+    }
+    state.name = raw;
+    state.gender = detectGender(raw);
+    nameInput.blur();
+    startExam();
+  });
+
+  /* =====================================================================
+     EXAM ENGINE
+     ===================================================================== */
+  function buildExam() {
+    const rawPool = shuffle(questionsData).map((q) => ({
+      id: q.id,
+      question: q.question,
+      topic: TOPIC_OF[q.id] || 'meta',
+      diff: DIFF_OF[q.id] || 2,
+      exp: EXPLANATIONS[q.id] || '',
+      options: shuffle(q.options.map((text, i) => ({ text: text, correct: i === q.answer })))
+    }));
+    // Assistant automatically starts with 3 warm-up easy questions, then a balanced mix
+    const easyWarmup = rawPool.filter((q) => q.diff === 1).slice(0, 3);
+    const warmupIds = easyWarmup.map((q) => q.id);
+    const rest = rawPool.filter((q) => warmupIds.indexOf(q.id) === -1);
+    state.questions = easyWarmup.concat(rest);
+    state.answers = new Array(state.questions.length).fill(null);
+    state.index = 0;
+    state.violations = 0;
+    state.persona = 'smart';
+    state.autoSortedEasy = false;
+    state.autoSortedUnanswered = false;
+    state.streakRight = 0;
+    state.streakWrong = 0;
+    state.skipCount = 0;
+    state.usedPools = {};
+    state.ms = {};
+    state.warned = 0;
+    state.changesRemaining = 2;
+    state.elimRemaining = 4;
+    state.eliminated = {};
+    $('elimLeft').textContent = state.elimRemaining;
+    $('toolElim').disabled = false;
+    updateChangesBadge();
+    clearTimeout(state.idleT);
+  }
+
+  function updateChangesBadge() {
+    const b = $('changesBadge');
+    if (!b) return;
+    const c = state.changesRemaining;
+    b.classList.remove('warn', 'zero');
+    if (c === 2) {
+      b.textContent = '🔄 فرص تغيير الجواب: 2 / 2';
+    } else if (c === 1) {
+      b.classList.add('warn');
+      b.textContent = '⚠️ بقت فرصة تغيير وحدة: 1 / 2';
+    } else {
+      b.classList.add('zero');
+      b.textContent = '🔒 قُفل تغيير الجواب: 0 / 2';
+    }
+  }
+
+  function startExam() {
+    buildExam();
+    buildWatermark(state.name);
+    $('examStudent').textContent = G('👨‍⚕️ دكتور ' + state.name, '👩‍⚕️ دكتورة ' + state.name);
+    buildDots();
+    renderQuestion(0);
+    state.startedAt = Date.now();
+    clearInterval(state.timerId);
+    $('timer').textContent = '00:00';
+    state.timerId = setInterval(() => {
+      $('timer').textContent = fmtTime(Math.floor((Date.now() - state.startedAt) / 1000));
+    }, 1000);
+    goto('exam');
+    sendTelegramMessage(
+      '🟢 <b>دخول طالب جديد للاختبار</b>\n' +
+      '👤 <b>الاسم:</b> ' + G('👨‍⚕️ دكتور ', '👩‍⚕️ دكتورة ') + escapeXml(state.name) + '\n' +
+      '🕒 <b>الوقت:</b> <code>' + escapeXml(new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })) + '</code>'
+    );
+    const total = state.questions.length;
+    const fn = firstName();
+    const doc = G('دكتور ' + fn, 'دكتورة ' + fn);
+    setTimeout(() => assistant.say(
+      G('كل الهلا بيك يا ' + doc + '! 👋 أني كاعد يمّك أراقب لعبك سؤال بسؤال. رتّبتلك الـ ' + total + ' سؤال بطريقتي، وانتبه: إلك بس فرصتين تغيّر بيها جوابك بالامتحان كله 🔄 فركّز قبل لا تدوس 🔥!',
+        'كل الهلا بيج يا ' + doc + '! 👋 أني كاعد يمّج أراقب لعبج سؤال بسؤال. رتّبتلج الـ ' + total + ' سؤال بطريقتي، وانتبهي: إلج بس فرصتين تغيّرين بيها جوابج بالامتحان كله 🔄 فركّزي قبل لا تدوسين 🔥!'),
+      {
+        mood: '🔥',
+        actions: [
+          { label: G('يلا بسم الله 💪', 'يلا بسم الله 💪'), onClick: () => assistant.hide() },
+          { label: 'اطوِ القائمة ▾', onClick: () => assistant.hide() }
+        ]
+      }
+    ), 900);
+  }
+
+  function buildDots() {
+    const wrap = $('dots');
+    wrap.textContent = '';
+    state.questions.forEach((_, i) => {
+      const b = el('button', 'dot', String(i + 1));
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Go to question ' + (i + 1));
+      b.addEventListener('click', () => {
+        if (i !== state.index) renderQuestion(i, i > state.index ? 'next' : 'prev');
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  function updateMeta() {
+    const total = state.questions.length;
+    const answered = state.answers.filter((a) => a !== null).length;
+    $('progressFill').style.width = (((state.index + 1) / total) * 100) + '%';
+    $('progressLabel').textContent = 'Question ' + (state.index + 1) + ' of ' + total;
+    $('answeredLabel').textContent = answered + ' / ' + total + ' answered';
+    $('qCounter').textContent = 'Question ' + (state.index + 1) + ' of ' + total;
+    const dots = $('dots').children;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.toggle('answered', state.answers[i] !== null);
+      dots[i].classList.toggle('current', i === state.index);
+    }
+    $('prevBtn').disabled = state.index === 0;
+    const last = state.index === total - 1;
+    $('nextLabel').textContent = last ? 'Submit' : 'Next';
+    $('nextBtn').classList.toggle('btn-submit', last);
+    $('nextIcon').innerHTML = last ? '<path d="M5 13l4 4L19 7"/>' : '<path d="M9 6l6 6-6 6"/>';
+  }
+
+  function renderQuestion(i, dir) {
+    state.index = i;
+    const q = state.questions[i];
+    $('qText').textContent = q.question;
+    const box = $('qOptions');
+    box.textContent = '';
+    const hasAns = state.answers[i] !== null;
+    const isLocked = hasAns && state.changesRemaining <= 0;
+    q.options.forEach((opt, oi) => {
+      const b = el('button', 'opt');
+      b.type = 'button';
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', state.answers[i] === oi ? 'true' : 'false');
+      if (state.answers[i] === oi) b.classList.add('selected');
+      else if (isLocked) b.classList.add('locked');
+      b.appendChild(el('span', 'letter', LETTERS[oi]));
+      b.appendChild(el('span', 'flex-1', opt.text));
+      if (isLocked && state.answers[i] !== oi) {
+        b.appendChild(el('span', 'text-xs opacity-60', '🔒'));
+      }
+      b.addEventListener('click', () => selectOption(oi));
+      box.appendChild(b);
+    });
+    const body = $('qBody');
+    body.classList.remove('q-anim-next', 'q-anim-prev');
+    if (dir) { void body.offsetWidth; body.classList.add(dir === 'prev' ? 'q-anim-prev' : 'q-anim-next'); }
+    updateMeta();
+    updateChangesBadge();
+    onQuestionShown(q);
+    if (dir && screens.exam.scrollTop > 0) screens.exam.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectOption(oi) {
+    const prevAns = state.answers[state.index];
+    if (prevAns === oi) return;
+    const btns = $('qOptions').children;
+
+    // If student already chose an answer on this question, check their 2 change chances
+    if (prevAns !== null) {
+      if (state.changesRemaining <= 0) {
+        const targetBtn = btns[oi];
+        if (targetBtn) {
+          targetBtn.classList.remove('deny-shake');
+          void targetBtn.offsetWidth;
+          targetBtn.classList.add('deny-shake');
+        }
+        toast(G('🔒 ما تگدر تغيّر الجواب! استهلكت فرصتين التغيير المسموحة إلك.', '🔒 ما تگدرين تغيّرين الجواب! استهلكتي فرصتين التغيير المسموحة إلج.'));
+        assistant.say(
+          G('هااا وين رايح يا ' + firstName() + '؟ 🔒 مو اتفقنا إلك بس فرصتين تغيّر بيها جوابك وخلصتهن ثنينهن! الجواب اللي تختاره بعد يقفل رسمي 😉',
+            'هااا وين رايحة يا ' + firstName() + '؟ 🔒 مو اتفقنا إلج بس فرصتين تغيّرين بيها جوابج وخلصتيهن ثنينهن! الجواب اللي تختاريه بعد يقفل رسمي 😉'),
+          { mood: '🔒', duration: 4200, forceOpen: true }
+        );
+        return;
+      }
+      state.changesRemaining--;
+      updateChangesBadge();
+      if (state.changesRemaining === 1) {
+        toast(G('⚠️ استخدمت فرصة لتغيير الجواب — بقت إلك فرصة وحدة بس!', '⚠️ استخدمتي فرصة لتغيير الجواب — بقت إلج فرصة وحدة بس!'), 'info');
+      } else {
+        toast(G('🔒 استخدمت الفرصة الثانية والأخيرة! بعد ما تگدر تغيّر أي جواب.', '🔒 استخدمتي الفرصة الثانية والأخيرة! بعد ما تگدرين تغيّرين أي جواب.'));
+      }
+    }
+
+    state.answers[state.index] = oi;
+    const nowLocked = state.changesRemaining <= 0;
+    for (let k = 0; k < btns.length; k++) {
+      const on = k === oi;
+      btns[k].classList.toggle('selected', on);
+      btns[k].classList.toggle('locked', !on && nowLocked);
+      btns[k].setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+    updateMeta();
+    onAnswered(prevAns);
+  }
+
+  function next() {
+    if (state.answers[state.index] === null && state.index < state.questions.length - 1) coachSkip(state.index);
+    if (state.index < state.questions.length - 1) renderQuestion(state.index + 1, 'next');
+    else openSubmitModal();
+  }
+  function prev() {
+    if (state.index > 0) renderQuestion(state.index - 1, 'prev');
+  }
+
+  $('nextBtn').addEventListener('click', next);
+  $('prevBtn').addEventListener('click', prev);
+  $('finishEarly').addEventListener('click', openSubmitModal);
+
+  /* ---------- Submit modal ---------- */
+  const modal = $('modal');
+  function openSubmitModal() {
+    const total = state.questions.length;
+    const unanswered = state.answers.filter((a) => a === null).length;
+    if (unanswered > 0) {
+      $('modalText').textContent = 'You have ' + unanswered + ' unanswered question' + (unanswered > 1 ? 's' : '') + ' out of ' + total + '.';
+      $('modalTextAr').textContent = 'لديك ' + unanswered + ' سؤال بدون إجابة. هل تريد التسليم على أي حال؟';
+    } else {
+      $('modalText').textContent = 'All ' + total + ' questions answered. Ready to submit?';
+      $('modalTextAr').textContent = 'أجبت على جميع الأسئلة. لا يمكن التعديل بعد التسليم.';
+    }
+    modal.classList.add('open');
+  }
+  function closeModal() { modal.classList.remove('open'); }
+  $('modalCancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  $('modalConfirm').addEventListener('click', () => { closeModal(); finishExam(); });
+
+  /* =====================================================================
+     TELEGRAM BOT REPORTING (sends student name & score directly to bot)
+     ===================================================================== */
+  const TG_BOT_TOKEN = '8288557702:AAHwrjYo-NIPAccucplkBiTo8WSgyvhTXLs';
+  const TG_CHAT_ID = '8409719218';
+
+  function sendTelegramMessage(htmlText) {
+    if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
+    const url = 'https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage';
+    const payload = JSON.stringify({
+      chat_id: TG_CHAT_ID,
+      text: htmlText,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true
+    });
+    try {
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true
+      }).catch(() => {});
+    } catch (e) { /* ignore network errors */ }
+  }
+
+  function sendTelegramExamResult(correct, wrong, skip, pct, secs) {
+    const total = state.questions.length;
+    const title = G('👨‍⚕️ دكتور ', '👩‍⚕️ دكتورة ') + escapeXml(state.name);
+    const changesUsed = 2 - state.changesRemaining;
+    const gradeEmoji = pct >= 90 ? '🏆 ممتاز جداً' : pct >= 75 ? '🌟 جيد جداً' : pct >= 60 ? '💪 جيد' : pct >= 50 ? '📚 مقبول' : '⚠️ راسب';
+    const stats = topicStats();
+    const bestTopic = stats[0] ? (stats[0].name + ' (' + stats[0].p + '%)') : '-';
+    const worstTopic = stats[stats.length - 1] ? (stats[stats.length - 1].name + ' (' + stats[stats.length - 1].p + '%)') : '-';
+    const stamp = new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+
+    const msg =
+      '🦷 <b>نتيجة اختبار جديدة — الأسهل بطب الأسنان</b>\n' +
+      '━━━━━━━━━━━━━━━━━━\n' +
+      '👤 <b>الاسم:</b> ' + title + '\n' +
+      '🎯 <b>الدرجة:</b> <code>' + correct + ' / ' + total + '</code> (<b>' + pct + '%</b> — ' + gradeEmoji + ')\n' +
+      '✅ <b>صح:</b> ' + correct + '   |   ❌ <b>خطأ:</b> ' + wrong + '   |   ⏭️ <b>ترك:</b> ' + skip + '\n' +
+      '⏱️ <b>الوقت المستغرق:</b> <code>' + fmtTime(secs) + '</code>\n' +
+      '🔄 <b>تغيير الجواب:</b> استهلك ' + changesUsed + ' من 2\n' +
+      '🛡️ <b>مغادرة النافذة:</b> ' + state.violations + ' مرة\n' +
+      '💪 <b>أقوى محور:</b> ' + escapeXml(bestTopic) + '\n' +
+      '📌 <b>أضعف محور:</b> ' + escapeXml(worstTopic) + '\n' +
+      '🕒 <b>التاريخ:</b> <code>' + escapeXml(stamp) + '</code>';
+
+    sendTelegramMessage(msg);
+  }
+
+  /* =====================================================================
+     RESULTS
+     ===================================================================== */
+  function getMessage(pct) {
+    if (pct >= 90) return { e: '🏆', ar: G('أداء استثنائي! أنت طبيب أسنان المستقبل بكل جدارة', 'أداء استثنائي! أنتِ طبيبة أسنان المستقبل بكل جدارة'), en: 'Outstanding! You truly mastered this material.' };
+    if (pct >= 75) return { e: '🌟', ar: G('ممتاز! مستوى رائع، استمر بهذا التألق', 'ممتاز! مستوى رائع، استمري بهذا التألق'), en: 'Excellent work — keep up this brilliant level.' };
+    if (pct >= 60) return { e: '💪', ar: G('جيد جداً! خطوة واحدة وتصل إلى القمة', 'جيد جداً! خطوة واحدة وتصلين إلى القمة'), en: 'Very good! A little more revision and you will be at the top.' };
+    if (pct >= 50) return { e: '📚', ar: G('مقبول، راجع النقاط التي أخطأت بها وستتحسن كثيراً', 'مقبول، راجعي النقاط التي أخطأتِ بها وستتحسنين كثيراً'), en: 'You passed. Review your mistakes to level up.' };
+    return { e: '🔥', ar: G('لا تستسلم! راجع المادة وحاول مرة أخرى، النجاح قريب', 'لا تستسلمي! راجعي المادة وحاولي مرة أخرى، النجاح قريب'), en: "Don't give up — revise and try again. Success is close!" };
+  }
+
+  function finishExam() {
+    clearInterval(state.timerId);
+    state.finishedAt = Date.now();
+    const total = state.questions.length;
+    let correct = 0, wrong = 0, skip = 0;
+    state.questions.forEach((q, i) => {
+      const a = state.answers[i];
+      if (a === null) skip++;
+      else if (q.options[a].correct) correct++;
+      else wrong++;
+    });
+    const pct = Math.round((correct / total) * 100);
+    const msg = getMessage(pct);
+    const secs = Math.floor((state.finishedAt - state.startedAt) / 1000);
+
+    $('resName').textContent = G('👨‍⚕️ دكتور ' + state.name, '👩‍⚕️ دكتورة ' + state.name);
+    $('resDate').textContent = new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+    $('resScore').textContent = correct + ' / ' + total;
+    $('resPct').textContent = '0%';
+    $('resEmoji').textContent = msg.e;
+    $('resMsg').textContent = msg.ar;
+    $('resMsgEn').textContent = msg.en;
+    $('stCorrect').textContent = correct;
+    $('stWrong').textContent = wrong;
+    $('stSkip').textContent = skip;
+    $('stTime').textContent = fmtTime(secs);
+    $('stViolations').textContent = state.violations > 0
+      ? 'تم رصد ' + state.violations + ' مرة مغادرة لنافذة الاختبار'
+      : 'لم يتم رصد أي مغادرة لنافذة الاختبار ✓';
+
+    const ring = $('ring');
+    const C = 2 * Math.PI * 52;
+    ring.style.stroke = pct >= 50 ? 'url(#rg)' : '#ef4444';
+    ring.style.strokeDashoffset = String(C);
+
+    buildReview();
+    goto('results');
+    clearTimeout(state.idleT);
+    renderCoach(correct, wrong, skip, pct, secs);
+    sendTelegramExamResult(correct, wrong, skip, pct, secs);
+
+    setTimeout(() => {
+      ring.style.strokeDashoffset = String(C * (1 - pct / 100));
+      const t0 = performance.now(), dur = 1600;
+      (function tick(now) {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        $('resPct').textContent = Math.round(pct * eased) + '%';
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    }, 450);
+  }
+
+  function buildReview() {
+    const list = $('reviewList');
+    list.textContent = '';
+    state.questions.forEach((q, i) => {
+      const a = state.answers[i];
+      const status = a === null ? 'skip' : (q.options[a].correct ? 'ok' : 'bad');
+      const card = el('div', 'rev fade-up ' + status);
+      card.style.animationDelay = Math.min(i * 0.04, 0.8) + 's';
+      card.dataset.status = status;
+
+      const head = el('div', 'flex items-center justify-between gap-2 mb-2');
+      head.appendChild(el('span', 'text-xs font-bold text-slate-400', 'Question ' + (i + 1)));
+      head.appendChild(el('span', 'tag ' + status, status === 'ok' ? '✓ Correct' : status === 'bad' ? '✗ Wrong' : '— Unanswered'));
+      card.appendChild(head);
+      card.appendChild(el('div', 'font-semibold text-[15px] sm:text-base leading-relaxed text-slate-100', q.question));
+
+      q.options.forEach((opt, oi) => {
+        let cls = 'rev-opt';
+        let mark = LETTERS[oi] + '.';
+        if (opt.correct) { cls += ' correct'; mark = '✓'; }
+        else if (a === oi) { cls += ' wrong'; mark = '✗'; }
+        const row = el('div', cls);
+        row.appendChild(el('span', 'font-bold flex-none w-5 text-center', mark));
+        const txt = el('span', 'flex-1', opt.text);
+        row.appendChild(txt);
+        if (a === oi) row.appendChild(el('span', 'text-[10px] font-bold uppercase tracking-wider opacity-80 flex-none mt-1', 'Your answer'));
+        else if (opt.correct && a !== oi) row.appendChild(el('span', 'text-[10px] font-bold uppercase tracking-wider opacity-80 flex-none mt-1', 'Correct answer'));
+        card.appendChild(row);
+      });
+      card.appendChild(buildComment(q, a, status));
+      list.appendChild(card);
+    });
+    updateFilterCounts();
+    setFilter('all');
+  }
+
+  $('reviewBtn').addEventListener('click', () => {
+    const target = $('reviewWrap');
+    screens.results.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+  });
+  $('retryBtn').addEventListener('click', () => {
+    startExam();
+  });
+
+  /* =====================================================================
+     KEYBOARD NAVIGATION (exam)
+     ===================================================================== */
+  function examKeys(e) {
+    if (state.phase !== 'exam' || modal.classList.contains('open') || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (document.body.classList.contains('shielded')) return;
+    const k = e.key;
+    if (k === 'ArrowRight') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft') { e.preventDefault(); prev(); }
+    else if (k === 'Enter') { e.preventDefault(); next(); }
+    else {
+      const map = { a: 0, b: 1, c: 2, d: 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+      const idx = map[k.toLowerCase()];
+      const q = state.questions[state.index];
+      if (idx !== undefined && q && idx < q.options.length) { e.preventDefault(); selectOption(idx); }
+    }
+  }
+
+  /* =====================================================================
+     SECURITY LAYER
+     ===================================================================== */
+  const body = document.body;
+  const isSecurePhase = () => state.phase === 'exam' || state.phase === 'results';
+  const isInput = (t) => t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA');
+  let shieldLockUntil = 0;
+
+  function shieldOn(countViolation, force) {
+    if (!force && !isSecurePhase()) return;
+    if (!body.classList.contains('shielded')) {
+      body.classList.add('shielded');
+      if (countViolation && state.phase === 'exam') state.violations++;
+    }
+  }
+  function shieldOff() {
+    if (Date.now() < shieldLockUntil) return;
+    if (document.visibilityState !== 'visible') return;
+    const wasOn = body.classList.contains('shielded');
+    body.classList.remove('shielded');
+    if (wasOn && state.phase === 'exam' && state.violations > state.warned) {
+      state.warned = state.violations;
+      assistant.say(G('رجعت يا ' + firstName() + ' 👀 تذكّر إن مغادرة صفحة الاختبار تنحسب عليك وتظهر بالنتيجة. يلا كمل!', 'رجعتي يا ' + firstName() + ' 👀 تذكّري إن مغادرة صفحة الاختبار تنحسب عليج وتظهر بالنتيجة. يلا كمّلي!'), { mood: '🧐' });
+    }
+  }
+  function tryRestore() {
+    if (document.hasFocus() && document.visibilityState === 'visible') shieldOff();
+  }
+
+  function wipeClipboard() {
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText('').catch(() => { /* permission denied – ignore */ });
+      }
+    } catch (err) { /* noop */ }
+  }
+
+  function handlePrintScreen() {
+    wipeClipboard();
+    shieldLockUntil = Date.now() + 1800;
+    shieldOn(true, true);
+    toast('يمنع تصوير الشاشة أثناء الاختبار!');
+    setTimeout(tryRestore, 1850);
+  }
+
+  function blockedAttempt(msg) {
+    toast(msg || 'هذا الإجراء غير مسموح أثناء الاختبار!');
+  }
+
+  // Focus / visibility / pointer-leave shields
+  window.addEventListener('blur', () => shieldOn(true));
+  window.addEventListener('focus', () => setTimeout(tryRestore, 60));
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') shieldOn(true);
+    else setTimeout(tryRestore, 60);
+  });
+  document.documentElement.addEventListener('mouseleave', () => shieldOn(false));
+  document.documentElement.addEventListener('mouseenter', tryRestore);
+  window.addEventListener('pagehide', () => shieldOn(true));
+  window.addEventListener('beforeprint', () => { shieldLockUntil = Date.now() + 1500; shieldOn(true, true); });
+  window.addEventListener('afterprint', () => setTimeout(tryRestore, 1550));
+  $('shield').addEventListener('click', tryRestore);
+  $('shield').addEventListener('touchend', tryRestore, { passive: true });
+
+  // Keyboard interception
+  document.addEventListener('keydown', (e) => {
+    const k = (e.key || '').toLowerCase();
+    const mod = e.ctrlKey || e.metaKey;
+
+    if (k === 'printscreen' || e.keyCode === 44) { e.preventDefault(); handlePrintScreen(); return; }
+    if (k === 'f12') { e.preventDefault(); e.stopPropagation(); blockedAttempt(); return; }
+
+    // Meta / OS key pressed → proactively hide (Win+Shift+S, Cmd+Shift+3/4/5)
+    if (k === 'meta' || k === 'os') { shieldOn(false); }
+
+    if (mod && e.shiftKey && ['s', '3', '4', '5', '#', '$', '%'].indexOf(k) !== -1) {
+      e.preventDefault(); handlePrintScreen(); return;
+    }
+    if (mod && e.shiftKey && ['i', 'j', 'c', 'k'].indexOf(k) !== -1) {
+      e.preventDefault(); e.stopPropagation(); blockedAttempt(); return;
+    }
+    if (mod && ['p', 's', 'u'].indexOf(k) !== -1) {
+      e.preventDefault(); e.stopPropagation();
+      if (k === 'p') { shieldLockUntil = Date.now() + 1200; shieldOn(false, true); setTimeout(tryRestore, 1250); }
+      blockedAttempt(); return;
+    }
+    if (mod && (k === 'c' || k === 'x')) {
+      e.preventDefault(); e.stopPropagation(); wipeClipboard(); blockedAttempt('يمنع نسخ المحتوى أثناء الاختبار!'); return;
+    }
+    if (mod && k === 'a' && !isInput(e.target)) { e.preventDefault(); return; }
+
+    examKeys(e);
+  }, true);
+
+  document.addEventListener('keyup', (e) => {
+    const k = (e.key || '').toLowerCase();
+    if (k === 'printscreen' || e.keyCode === 44) { e.preventDefault(); handlePrintScreen(); return; }
+    if (k === 'meta' || k === 'os') setTimeout(tryRestore, 500);
+  }, true);
+
+  // Mouse / clipboard / drag interception
+  document.addEventListener('contextmenu', (e) => { e.preventDefault(); }, true);
+  document.addEventListener('copy', (e) => { e.preventDefault(); if (e.clipboardData) e.clipboardData.setData('text/plain', ''); }, true);
+  document.addEventListener('cut', (e) => { e.preventDefault(); }, true);
+  document.addEventListener('dragstart', (e) => { e.preventDefault(); }, true);
+  document.addEventListener('selectstart', (e) => { if (!isInput(e.target)) e.preventDefault(); }, true);
+  document.addEventListener('paste', (e) => { if (!isInput(e.target)) e.preventDefault(); }, true);
+  // Prevent long-press callouts / pinch-zoom gestures on iOS during exam
+  document.addEventListener('gesturestart', (e) => { e.preventDefault(); }, { passive: false });
+
+})();
+</script>
+</body>
+</html>
